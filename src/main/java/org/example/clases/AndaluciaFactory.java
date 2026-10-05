@@ -3,7 +3,7 @@ package org.example.clases;
 import org.example.interfaces.ElementoAndaluz;
 
 // Clase que crea las los objetos a partir de un String tipo,
-// Extiende la clase ELementoAndaluzFactory y hereda su método abstracto
+// Extiende la clase ELementoAndaluzFactory y hereda su metodo abstracto
 public class AndaluciaFactory extends ElementoAndaluzFactory{
 
     /**
