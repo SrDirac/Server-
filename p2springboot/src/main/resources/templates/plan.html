@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Plantilla modelo estudiantes</title>
+
+    <style>
+        .asignaturas{
+            list-style:none;
+        }
+    </style>
+</head>
+<body>
+<!-- th text=|| las barras permiten anadir texto con variables-->
+<p th:text="|Hola ${nombre}|"></p>
+<h1 th:text="${titulo}"></h1>
+<p>
+<!--#list.size devuelve los elementos de una lista, en nuestro caso de la lista de asignaturas-->
+    <strong>Número de asignaturas:</strong>
+    <span th:text="${#lists.size(asignaturas)}"></span>
+</p>
+<!--th:each recorre la lista de asignaturas, IterStat guarda su estado , como indice -->
+<ul class="asignaturas">
+    <li th:each="asignatura, iterStat : ${asignaturas}">
+        <!--Empieza por 0 iterStat.index y en cada vuelta se le suma 1-->
+        <span th:text="${iterStat.index + 1}"></span>
+        <span th:text="${asignatura}"></span>
+        <!--/* El mismo índice lee la duración de la misma posición en la otra lista , es decir seria como duraciones[0]*/-->
+        <span th:text="|${duraciones[iterStat.index]} min|"></span>
+        <!--formatDecimal(valor,minimo de Enteros, decimales ,separador);60  pasa a minutos sin perder decimales-->
+        <span th:text="${#numbers.formatDecimal(duraciones[iterStat.index] / 60.0, 1, 2, 'COMMA')}"></span>
+    </li>
+</ul>
+<h2 class="ejercicio2">Practica del #numbers.sequence</h2>
+
+<ul class="escala">
+    <!--/* #numbers.sequence(inicio, fin, paso) genera los números 0, 15, 30... sin crearlos en el controlador */-->
+    <li th:each="minuto : ${#numbers.sequence(0, 150, 15)}" th:text="${minuto}"></li>
+</ul>
+</body>
+</html>
