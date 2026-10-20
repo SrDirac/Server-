@@ -14,5 +14,6 @@
         <module>Ejercicio2P</module>
         <module>PatronDI</module>
         <module>PatronFactory</module>
+        <module>p2springboot</module>
     </modules>
 </project>
