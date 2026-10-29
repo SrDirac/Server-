@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resumen de la solicitud · Aula maker</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<main class="contenedor">
+    <h1>Resumen de tu solicitud</h1>
+
+    <!-- Aviso: la solicitud solo se muestra, no se guarda ni se aprueba -->
+    <p class="aviso">Esta es solo una vista previa de los datos enviados.
+        La solicitud no se ha guardado ni supone la reserva del material.</p>
+
+    <!-- th:text escapa el contenido: si alguien escribe HTML, se ve como texto -->
+    <dl class="datos">
+        <dt>Nombre</dt>
+        <dd th:text="${solicitud.nombre}">Nombre</dd>
+
+        <dt>Correo electrónico</dt>
+        <dd th:text="${solicitud.email}">correo@ejemplo.com</dd>
+
+        <dt>Material</dt>
+        <dd th:text="${nombreMaterial} + ' (' + ${solicitud.material} + ')'">Material (CODIGO)</dd>
+
+        <dt>Unidades</dt>
+        <dd th:text="${solicitud.unidades}">1</dd>
+
+        <dt>Fecha de recogida</dt>
+        <dd th:text="${#temporals.format(solicitud.fechaRecogida, 'dd/MM/yyyy')}">01/01/2026</dd>
+
+        <dt>Fecha de devolución</dt>
+        <dd th:text="${#temporals.format(solicitud.fechaDevolucion, 'dd/MM/yyyy')}">01/01/2026</dd>
+
+        <dt>Motivo</dt>
+        <dd th:text="${solicitud.motivo}">Motivo</dd>
+
+        <dt>Normas aceptadas</dt>
+        <dd th:text="${solicitud.aceptaNormas} ? 'Sí' : 'No'">Sí</dd>
+
+        <dt>Días del préstamo</dt>
+        <dd th:text="${dias}">1</dd>
+
+        <dt>Total de días-unidad</dt>
+        <dd th:text="${diasUnidad}">1</dd>
+    </dl>
+
+    <!-- Condición según la duración: un solo día o varios días -->
+    <p th:if="${dias == 1}" class="mensaje">
+        Préstamo de un solo día: recuerda devolver el material antes de que cierre el aula.
+    </p>
+    <p th:unless="${dias == 1}" class="mensaje">
+        Préstamo de <span th:text="${dias}">varios</span> días: guarda el material en un lugar seguro
+        durante todo el periodo.
+    </p>
+
+    <p><a th:href="@{/solicitud/nueva}" class="boton">Hacer otra solicitud</a></p>
+    <p><a th:href="@{/}">Volver al catálogo</a></p>
+</main>
+</body>
+</html>

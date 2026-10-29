@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Página no encontrada · Aula maker</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<main class="contenedor pagina-error">
+    <!-- Plantilla específica: Spring Boot la elige antes que 4xx.html para el estado 404 -->
+    <h1>Error 404: no encontrado</h1>
+    <p>El material o la página que buscas no existe. Puede que el código esté mal escrito
+        o que el recurso no forme parte del catálogo.</p>
+    <p><a th:href="@{/}" class="boton">Volver al catálogo</a></p>
+</main>
+</body>
+</html>

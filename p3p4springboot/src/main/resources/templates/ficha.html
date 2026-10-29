@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${material[1]} + ' · Aula maker'">Ficha · Aula maker</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<main class="contenedor">
+    <!-- material es la fila encontrada: [0] código, [1] nombre, [2] descripción -->
+    <h1 th:text="${material[1]}">Nombre del material</h1>
+
+    <dl class="datos">
+        <dt>Código</dt>
+        <dd th:text="${material[0]}">CODIGO</dd>
+
+        <dt>Descripción</dt>
+        <dd th:text="${material[2]}">Descripción</dd>
+
+        <!-- turno llega como parámetro de consulta (?turno=...) o vale "general" -->
+        <dt>Turno</dt>
+        <dd th:text="${turno}">general</dd>
+    </dl>
+
+    <p><a th:href="@{/solicitud/nueva}" class="boton">Solicitar este material</a></p>
+    <p><a th:href="@{/}">Volver al catálogo</a></p>
+</main>
+</body>
+</html>

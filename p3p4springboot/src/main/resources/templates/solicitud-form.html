@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Solicitud de préstamo · Aula maker</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<main class="contenedor">
+    <h1>Solicitud de préstamo</h1>
+
+    <!-- th:object enlaza el formulario con el DTO "solicitud"; *{campo} se refiere a sus propiedades -->
+    <form th:action="@{/solicitudes}" th:object="${solicitud}" method="post" class="formulario">
+
+        <div class="campo">
+            <label for="nombre">Nombre de quien solicita</label>
+            <input type="text" th:field="*{nombre}" maxlength="60">
+            <p class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></p>
+        </div>
+
+        <div class="campo">
+            <label for="email">Correo electrónico</label>
+            <input type="email" th:field="*{email}" maxlength="120">
+            <p class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+        </div>
+
+        <div class="campo">
+            <label for="material">Material solicitado</label>
+            <select th:field="*{material}">
+                <option value="">Elige un material</option>
+                <!-- Las opciones salen del mismo array del catálogo: value = código, texto = nombre -->
+                <option th:each="m : ${materiales}" th:value="${m[0]}" th:text="${m[1]}">Material</option>
+            </select>
+            <p class="error" th:if="${#fields.hasErrors('material')}" th:errors="*{material}"></p>
+        </div>
+
+        <div class="campo">
+            <label for="unidades">Unidades (1 a 3)</label>
+            <input type="number" th:field="*{unidades}" min="1" max="3">
+            <p class="error" th:if="${#fields.hasErrors('unidades')}" th:errors="*{unidades}"></p>
+        </div>
+
+        <div class="campo">
+            <label for="fechaRecogida">Fecha de recogida</label>
+            <input type="date" th:field="*{fechaRecogida}">
+            <p class="error" th:if="${#fields.hasErrors('fechaRecogida')}" th:errors="*{fechaRecogida}"></p>
+        </div>
+
+        <div class="campo">
+            <label for="fechaDevolucion">Fecha de devolución</label>
+            <input type="date" th:field="*{fechaDevolucion}">
+            <p class="error" th:if="${#fields.hasErrors('fechaDevolucion')}" th:errors="*{fechaDevolucion}"></p>
+        </div>
+
+        <div class="campo">
+            <label for="motivo">Motivo del préstamo (30 a 400 caracteres)</label>
+            <textarea th:field="*{motivo}" rows="4" maxlength="400"></textarea>
+            <p class="error" th:if="${#fields.hasErrors('motivo')}" th:errors="*{motivo}"></p>
+        </div>
+
+        <div class="campo casilla">
+            <input type="checkbox" th:field="*{aceptaNormas}">
+            <label for="aceptaNormas1">Acepto las normas de préstamo del aula maker</label>
+            <p class="error" th:if="${#fields.hasErrors('aceptaNormas')}" th:errors="*{aceptaNormas}"></p>
+        </div>
+
+        <button type="submit" class="boton">Enviar solicitud</button>
+    </form>
+
+    <p><a th:href="@{/}">Volver al catálogo</a></p>
+</main>
+</body>
+</html>

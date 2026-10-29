@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Error del servidor · Aula maker</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<main class="contenedor pagina-error">
+    <!-- Errores internos (500-599): no se muestran trazas ni detalles técnicos -->
+    <h1>Error del servidor</h1>
+    <p>Se ha producido un problema inesperado. Inténtalo de nuevo más tarde.</p>
+    <p><a th:href="@{/}" class="boton">Volver al catálogo</a></p>
+</main>
+</body>
+</html>

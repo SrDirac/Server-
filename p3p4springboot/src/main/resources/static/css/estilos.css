@@ -1,0 +1,199 @@
+/* Estilos comunes del aula maker. Diseño pensado primero para móvil
+   y ampliado con media queries para pantallas grandes. */
+
+:root {
+    --color-principal: #2563eb;
+    --color-principal-oscuro: #1e40af;
+    --color-error: #b91c1c;
+    --color-fondo: #f3f4f6;
+    --color-tarjeta: #ffffff;
+    --color-texto: #1f2937;
+    --color-suave: #6b7280;
+    --radio: 8px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+    color: var(--color-texto);
+    background: var(--color-fondo);
+}
+
+/* Contenedor centrado; en móvil ocupa todo el ancho con margen lateral */
+.contenedor {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 1.6rem;
+}
+
+a {
+    color: var(--color-principal);
+}
+
+/* Botones: enlaces y el botón de enviar se ven igual */
+.boton {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: var(--radio);
+    background: var(--color-principal);
+    color: #fff;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton:hover {
+    background: var(--color-principal-oscuro);
+}
+
+/* ---------- Catálogo ---------- */
+
+/* Una columna en móvil; varias en pantallas anchas */
+.catalogo {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .catalogo {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+}
+
+.tarjeta {
+    background: var(--color-tarjeta);
+    border-radius: var(--radio);
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tarjeta h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.2rem;
+}
+
+/* ---------- Ficha y resumen ---------- */
+
+.datos {
+    background: var(--color-tarjeta);
+    border-radius: var(--radio);
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.datos dt {
+    font-weight: bold;
+    color: var(--color-suave);
+    font-size: 0.9rem;
+}
+
+.datos dd {
+    margin: 0 0 0.8rem;
+    /* Evita que textos largos sin espacios rompan el diseño en móvil */
+    overflow-wrap: anywhere;
+}
+
+/* En pantallas anchas, etiqueta y valor en la misma fila */
+@media (min-width: 640px) {
+    .datos {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 0.4rem 1rem;
+    }
+
+    .datos dd {
+        margin: 0;
+    }
+}
+
+.aviso {
+    background: #fef3c7;
+    border-left: 4px solid #d97706;
+    padding: 0.8rem 1rem;
+    border-radius: var(--radio);
+}
+
+.mensaje {
+    background: #dbeafe;
+    border-left: 4px solid var(--color-principal);
+    padding: 0.8rem 1rem;
+    border-radius: var(--radio);
+}
+
+/* ---------- Formulario ---------- */
+
+.formulario {
+    background: var(--color-tarjeta);
+    border-radius: var(--radio);
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.campo {
+    margin-bottom: 1rem;
+}
+
+.campo label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+/* Los controles ocupan todo el ancho para que sean cómodos en móvil */
+.campo input,
+.campo select,
+.campo textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: var(--radio);
+    font: inherit;
+}
+
+/* La casilla va en línea con su texto, no a todo el ancho */
+.casilla {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.casilla input {
+    width: auto;
+}
+
+.casilla label {
+    display: inline;
+    margin: 0;
+    font-weight: normal;
+}
+
+.casilla .error {
+    width: 100%;
+}
+
+/* Mensajes de validación del servidor junto a cada campo */
+.error {
+    color: var(--color-error);
+    font-size: 0.9rem;
+    margin: 0.3rem 0 0;
+}
+
+/* ---------- Páginas de error ---------- */
+
+.pagina-error h1 {
+    color: var(--color-error);
+}

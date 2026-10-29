@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Aula maker · Catálogo</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<main class="contenedor">
+    <h1>Material del aula maker</h1>
+    <p>Elige un recurso para ver su ficha.</p>
+
+    <ul class="catalogo">
+        <!-- th:each recorre el array: "m" es cada fila {código, nombre, descripción} Explicado con detalle
+         en Obsidian/java/springboot/thymeleaf-->
+        <li th:each="m : ${materiales}" class="tarjeta">
+            <h2 th:text="${m[1]}">Nombre</h2>
+            <p th:text="${m[2]}">Descripción</p>
+            <!-- La URL se construye con @{...}: {codigo} es la variable de ruta -->
+            <a th:href="@{/materiales/{codigo}(codigo=${m[0]})}" class="boton">Ver ficha</a>
+        </li>
+    </ul>
+
+    <p><a th:href="@{/solicitud/nueva}">Solicitar un préstamo</a></p>
+</main>
+</body>
+</html>

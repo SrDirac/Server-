@@ -15,5 +15,7 @@
         <module>PatronDI</module>
         <module>PatronFactory</module>
         <module>p2springboot</module>
+        <module>p3p4springboot</module>
+        <module>p7springboot</module>
     </modules>
 </project>

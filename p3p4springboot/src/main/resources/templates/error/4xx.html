@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Petición no válida · Aula maker</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<main class="contenedor pagina-error">
+    <!-- Plantilla general para errores del cliente (400-499) sin plantilla propia -->
+    <!-- status lo añade Spring Boot al modelo de error; solo se muestra el número -->
+    <h1>Error <span th:text="${status}">4xx</span>: petición no válida</h1>
+    <p>No se ha podido atender la petición. Revisa la dirección o vuelve a intentarlo
+        desde el catálogo.</p>
+    <p><a th:href="@{/}" class="boton">Volver al catálogo</a></p>
+</main>
+</body>
+</html>
