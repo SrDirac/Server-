@@ -1,5 +1,3 @@
-/* Estilos comunes del aula maker. Diseño pensado primero para móvil
-   y ampliado con media queries para pantallas grandes. */
 
 :root {
     --color-principal: #2563eb;
@@ -24,7 +22,7 @@ body {
     background: var(--color-fondo);
 }
 
-/* Contenedor centrado; en móvil ocupa todo el ancho con margen lateral */
+
 .contenedor {
     max-width: 800px;
     margin: 0 auto;
@@ -40,7 +38,7 @@ a {
     color: var(--color-principal);
 }
 
-/* Botones: enlaces y el botón de enviar se ven igual */
+
 .boton {
     display: inline-block;
     padding: 0.6rem 1.2rem;
@@ -57,9 +55,7 @@ a {
     background: var(--color-principal-oscuro);
 }
 
-/* ---------- Catálogo ---------- */
 
-/* Una columna en móvil; varias en pantallas anchas */
 .catalogo {
     list-style: none;
     padding: 0;
@@ -85,7 +81,7 @@ a {
     font-size: 1.2rem;
 }
 
-/* ---------- Ficha y resumen ---------- */
+
 
 .datos {
     background: var(--color-tarjeta);
@@ -102,11 +98,11 @@ a {
 
 .datos dd {
     margin: 0 0 0.8rem;
-    /* Evita que textos largos sin espacios rompan el diseño en móvil */
+
     overflow-wrap: anywhere;
 }
 
-/* En pantallas anchas, etiqueta y valor en la misma fila */
+
 @media (min-width: 640px) {
     .datos {
         display: grid;
@@ -133,7 +129,7 @@ a {
     border-radius: var(--radio);
 }
 
-/* ---------- Formulario ---------- */
+
 
 .formulario {
     background: var(--color-tarjeta);
@@ -152,7 +148,7 @@ a {
     margin-bottom: 0.3rem;
 }
 
-/* Los controles ocupan todo el ancho para que sean cómodos en móvil */
+
 .campo input,
 .campo select,
 .campo textarea {
@@ -163,7 +159,7 @@ a {
     font: inherit;
 }
 
-/* La casilla va en línea con su texto, no a todo el ancho */
+
 .casilla {
     display: flex;
     flex-wrap: wrap;
@@ -185,14 +181,13 @@ a {
     width: 100%;
 }
 
-/* Mensajes de validación del servidor junto a cada campo */
 .error {
     color: var(--color-error);
     font-size: 0.9rem;
     margin: 0.3rem 0 0;
 }
 
-/* ---------- Páginas de error ---------- */
+
 
 .pagina-error h1 {
     color: var(--color-error);
