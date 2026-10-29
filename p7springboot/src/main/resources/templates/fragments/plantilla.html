@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Aqui estan las partes que se repiten en las dos paginas.
+     Los meto con th:replace, que quita la etiqueta de la pagina y pone la del fragmento.
+     Con th:insert se quedaria la etiqueta de la pagina y el fragmento iria dentro,
+     y saldria por ejemplo un header dentro de otro header -->
+
+<!-- Cabecera con la navegacion y los idiomas: recibe el título de la página y su ruta.
+     La ruta sirve para marcar en que pagina estas y para que al cambiar
+     de idioma te quedes en la misma pagina -->
+<header th:fragment="header(titulo, ruta)" class="cabecera">
+    <div class="cabecera__marca">
+        <a th:href="@{/}" class="cabecera__logo" th:text="#{cabecera.logo}"></a>
+        <span class="cabecera__pagina" th:text="${titulo}"></span>
+    </div>
+
+    <nav class="cabecera__nav">
+        <a th:href="@{/}" th:text="#{nav.actividades}"
+           th:classappend="${ruta == '/'} ? 'actual'"></a>
+        <a th:href="@{/visita}" th:text="#{nav.visita}"
+           th:classappend="${ruta == '/visita'} ? 'actual'"></a>
+    </nav>
+
+    <!-- Recarga la misma pagina con ?lang=es o ?lang=en -->
+    <div class="idiomas">
+        <a th:href="@{${ruta}(lang='es')}" th:text="#{idioma.es}"
+           th:classappend="${#locale.language == 'es'} ? 'actual'"></a>
+        <a th:href="@{${ruta}(lang='en')}" th:text="#{idioma.en}"
+           th:classappend="${#locale.language == 'en'} ? 'actual'"></a>
+    </div>
+</header>
+
+<!-- Tarjeta de una actividad. Es la misma para todas, solo cambian los datos que le paso -->
+<article th:fragment="tarjeta(codigo, titulo, descripcion, fecha, numero)" class="tarjeta"
+         th:classappend="${codigo.startsWith('EXC')} ? 'tarjeta--exc' : 'tarjeta--act'">
+    <div class="tarjeta__cabecera">
+        <h1 class="tarjeta__etiqueta"
+            th:text="${codigo.startsWith('EXC')} ? #{tarjeta.excursion} : #{tarjeta.actividad}"></h1>
+        <img th:src="@{'/img/' + ${numero} + '.jpg'}" th:alt="${titulo}">
+    </div>
+    <h2 class="tarjeta__titulo" th:text="${titulo}"></h2>
+    <p class="tarjeta__descripcion" th:text="${descripcion}"></p>
+    <div class="tarjeta__pie">
+        <span class="tarjeta__fecha">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="tarjeta__fecha-texto" th:text="${fecha}"></span>
+        </span>
+        <button type="button" th:text="#{tarjeta.reservar}"></button>
+    </div>
+</article>
+
+<!-- Pie -->
+<footer th:fragment="footer" class="pie">
+    <p th:text="#{pie.texto}"></p>
+</footer>
+
+</body>
+</html>

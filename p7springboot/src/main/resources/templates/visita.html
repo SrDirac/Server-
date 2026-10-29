@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{visita.titulo.pagina}">Visita</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<!-- La misma cabecera pero con el titulo y la ruta de esta pagina -->
+<header th:replace="~{fragments/plantilla :: header(#{nav.visita}, '/visita')}"></header>
+
+<main class="contenedor">
+
+    <section class="intro">
+        <h1 th:text="#{visita.intro.titulo}"></h1>
+        <p th:text="#{visita.intro.texto}"></p>
+    </section>
+
+    <div class="visita">
+        <!-- Como hemos dicho antes, todos los elementos son seleccionados del messages.propiertes -->
+        <!--Es el mismo para todas las páginas, por eso no hace falta ni un th:each ni nada, con que pongamos directamente
+        el valor con el th:text es suficiente, no hace falta más -->
+        <!-- Horario -->
+        <section class="bloque">
+            <h2 th:text="#{visita.horario.titulo}"></h2>
+            <ul class="horario">
+                <li><span th:text="#{visita.horario.semana}"></span><strong th:text="#{visita.horario.semana.horas}"></strong></li>
+                <li><span th:text="#{visita.horario.sabado}"></span><strong th:text="#{visita.horario.sabado.horas}"></strong></li>
+                <li><span th:text="#{visita.horario.domingo}"></span><strong th:text="#{visita.horario.cerrado}"></strong></li>
+            </ul>
+            <p class="nota" th:text="#{visita.horario.nota}"></p>
+        </section>
+
+        <!-- Cómo llegar -->
+        <section class="bloque">
+            <h2 th:text="#{visita.llegar.titulo}"></h2>
+            <p><strong th:text="#{visita.llegar.direccion}"></strong></p>
+            <ul>
+                <li th:text="#{visita.llegar.metro}"></li>
+                <li th:text="#{visita.llegar.bus}"></li>
+                <li th:text="#{visita.llegar.parking}"></li>
+            </ul>
+        </section>
+
+        <!-- Reservas y precios -->
+        <section class="bloque">
+            <h2 th:text="#{visita.reservas.titulo}"></h2>
+            <ul>
+                <li th:text="#{visita.reservas.entrada}"></li>
+                <li th:text="#{visita.reservas.talleres}"></li>
+                <li th:text="#{visita.reservas.antelacion}"></li>
+                <li th:text="#{visita.reservas.cancelar}"></li>
+            </ul>
+        </section>
+
+        <!-- Accesibilidad y servicios -->
+        <section class="bloque">
+            <h2 th:text="#{visita.servicios.titulo}"></h2>
+            <ul>
+                <li th:text="#{visita.servicios.accesible}"></li>
+                <li th:text="#{visita.servicios.perros}"></li>
+                <li th:text="#{visita.servicios.cafeteria}"></li>
+                <li th:text="#{visita.servicios.wifi}"></li>
+            </ul>
+        </section>
+
+        <!-- Preguntas frecuentes -->
+        <section class="bloque bloque--ancho">
+            <h2 th:text="#{visita.faq.titulo}"></h2>
+            <details>
+                <summary th:text="#{visita.faq.p1}"></summary>
+                <p th:text="#{visita.faq.r1}"></p>
+            </details>
+            <details>
+                <summary th:text="#{visita.faq.p2}"></summary>
+                <p th:text="#{visita.faq.r2}"></p>
+            </details>
+            <details>
+                <summary th:text="#{visita.faq.p3}"></summary>
+                <p th:text="#{visita.faq.r3}"></p>
+            </details>
+        </section>
+
+        <!-- Contacto -->
+        <section class="bloque bloque--ancho bloque--contacto">
+            <h2 th:text="#{visita.contacto.titulo}"></h2>
+            <p th:text="#{visita.contacto.texto}"></p>
+            <p><strong th:text="#{visita.contacto.datos}"></strong></p>
+            <a class="boton" th:href="@{/}" th:text="#{visita.contacto.boton}"></a>
+        </section>
+
+    </div>
+</main>
+
+<footer th:replace="~{fragments/plantilla::footer}"></footer>
+</body>
+</html>

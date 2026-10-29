@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{actividades.titulo.pagina}">Actividades</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"  th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<!-- Le paso a la cabecera el nombre de esta pagina y su ruta -->
+<header th:replace="~{fragments/plantilla :: header(#{nav.actividades}, '/')}"></header>
+<main class="contenedor">
+
+    <section class="intro">
+        <h1 th:text="#{actividades.titulo}"></h1>
+        <p th:text="#{actividades.intro}"></p>
+    </section>
+
+    <div class="filtros" role="group">
+        <button class="filtro activo" id="todas" data-filtro="todas" th:text="#{filtro.todas}"></button>
+        <button class="filtro" id="excursiones" data-filtro="EXC" th:text="#{filtro.excursiones}"></button>
+        <button class="filtro" id="actividades" data-filtro="ACT" th:text="#{filtro.actividades}"></button>
+    </div>
+
+    <section class="tarjetas">
+        <!-- Recorro las actividades y escribe cada una con el fragmento tarjeta.
+             El th:each va en un th:block porque si lo pongo junto al th:replace
+             Thymeleaf hace primero el replace y el bucle no funciona.
+             #{${a[1]}} coge la clave que viene del array y la traduce -->
+        <th:block th:each="a, stat : ${actividades}">
+            <article th:replace="~{fragments/plantilla :: tarjeta(${a[0]}, #{${a[1]}}, #{${a[2]}}, ${a[3]}, ${stat.count})}"></article>
+        </th:block>
+    </section>
+</main>
+<footer th:replace="~{fragments/plantilla::footer}"></footer>
+<script>
+
+    /*
+    Logica javaScript , es por la cara pero para practicar de cara a las recuperaciones viene bien
+    se puede simplificar la logica , dependiendo del boton que escojas , recorre el array de actividades
+    y les añade o quita el display para que se muestren o no según el botón seleccionado
+     */
+    const actividades=document.querySelectorAll(".tarjeta")
+    const botonExcursiones=document.getElementById("excursiones")
+    const botonActividades=document.getElementById("actividades")
+    const todasActividades=document.getElementById("todas")
+
+    botonExcursiones.addEventListener("click", function(){
+        for (const actividad of actividades) {
+           if(actividad.matches('.tarjeta--act')){
+               actividad.style.display="none"
+           }else{
+               actividad.style.display="block"
+           }
+
+        }
+        todasActividades.classList.remove("activo")
+        botonActividades.classList.remove("activo")
+        botonExcursiones.classList.add("activo")
+    })
+
+    botonActividades.addEventListener("click", function(){
+        for (const actividad of actividades) {
+            if(actividad.matches('.tarjeta--exc')){
+                actividad.style.display="none"
+            }else{
+                actividad.style.display="block"
+            }
+        }
+        todasActividades.classList.remove("activo")
+        botonExcursiones.classList.remove("activo")
+        botonActividades.classList.add("activo")
+    })
+
+    todasActividades.addEventListener("click", function(){
+        for (const actividad of actividades) {
+            actividad.style.display="block"
+        }
+        botonExcursiones.classList.remove("activo")
+        botonActividades.classList.remove("activo")
+        todasActividades.classList.add("activo")
+    })
+</script>
+</body>
+</html>

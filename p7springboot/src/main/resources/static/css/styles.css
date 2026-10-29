@@ -1,0 +1,466 @@
+/* ===== Variables ===== */
+:root {
+    --verde: #2a7d6f;
+    --verde-oscuro: #1f5e53;
+    --naranja: #c25b2a;
+    --fondo: #f4f6f5;
+    --texto: #222;
+    --texto-suave: #5f6b68;
+    --borde: #e6eae9;
+    --radio: 14px;
+    --sombra: 0 2px 10px rgba(0, 0, 0, 0.06);
+    --sombra-hover: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== Base ===== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: "Poppins", system-ui, sans-serif;
+}
+
+main {
+    flex: 1;                        /* mantiene el footer abajo */
+}
+
+/* ===== Cabecera ===== */
+.cabecera {
+    position: sticky;               /* se queda fija arriba al hacer scroll */
+    top: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px 32px;
+    background: var(--verde);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.cabecera a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.cabecera__marca {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+}
+
+.cabecera__logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+/* Nombre de la pagina en la que estas */
+.cabecera__pagina {
+    padding-left: 16px;
+    border-left: 1px solid rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9rem;
+}
+
+.cabecera__nav a.actual {
+    opacity: 1;
+}
+
+.cabecera__nav a.actual::after {
+    width: 100%;
+}
+
+/* ===== Selector de idioma ===== */
+.idiomas {
+    display: flex;
+    gap: 4px;
+    padding: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 999px;
+}
+
+.idiomas a {
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 999px;
+}
+
+.idiomas a.actual {
+    color: var(--verde-oscuro);
+    background: #fff;
+}
+
+
+.cabecera__nav {
+    display: flex;
+    gap: 24px;
+}
+
+.cabecera__nav a {
+    position: relative;
+    padding: 4px 0;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+}
+
+.cabecera__nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background: #fff;
+    transition: width 0.25s;
+}
+
+.cabecera__nav a:hover {
+    opacity: 1;
+}
+
+.cabecera__nav a:hover::after {
+    width: 100%;
+}
+
+/* ===== Contenedor de tarjetas ===== */
+.tarjetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 28px;
+}
+
+/* ===== Tarjeta ===== */
+.tarjeta {
+    --color: var(--verde);          /* actividades */
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: var(--radio);
+    border-top: 4px solid var(--color);
+    overflow: hidden;
+    box-shadow: var(--sombra);
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.tarjeta--exc {
+    --color: var(--naranja);        /* excursiones */
+}
+
+.tarjeta:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--sombra-hover);
+}
+
+/* ===== Imagen y etiqueta ===== */
+.tarjeta__cabecera {
+    position: relative;
+    overflow: hidden;
+}
+
+.tarjeta__cabecera img {
+    display: block;
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    transition: transform 0.4s;
+}
+
+.tarjeta:hover .tarjeta__cabecera img {
+    transform: scale(1.06);         /* zoom suave */
+}
+
+.tarjeta__etiqueta {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 1;
+    margin: 0;
+    padding: 5px 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #fff;
+    background: var(--color);
+    border-radius: 999px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== Texto ===== */
+.tarjeta__titulo {
+    margin: 18px 20px 8px;
+    font-size: 1.15rem;
+    line-height: 1.3;
+}
+
+.tarjeta__descripcion {
+    flex: 1;                        /* empuja el pie hacia abajo */
+    margin: 0 20px 18px;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--texto-suave);
+}
+
+/* ===== Pie de la tarjeta ===== */
+.tarjeta__pie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    border-top: 1px solid var(--borde);
+    background: #fafbfb;
+}
+
+.tarjeta__fecha {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color);
+}
+
+.tarjeta__pie button {
+    padding: 9px 16px;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    background: var(--color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.1s;
+}
+
+.tarjeta__pie button:hover {
+    filter: brightness(1.1);
+}
+
+/* Enlace con forma de boton (pagina de visita) */
+.boton {
+    display: inline-block;
+    padding: 9px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    background: var(--naranja);
+    border-radius: 8px;
+}
+
+/* ===== Footer ===== */
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    background: var(--verde-oscuro);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.88rem;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* ===== Página de visita ===== */
+.visita {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+}
+
+.bloque {
+    padding: 24px;
+    background: #fff;
+    border-radius: var(--radio);
+    border-top: 4px solid var(--verde);
+    box-shadow: var(--sombra);
+}
+
+.bloque--ancho {
+    grid-column: 1 / -1;            /* ocupa toda la fila */
+}
+
+.bloque h2 {
+    margin: 0 0 14px;
+    font-size: 1.15rem;
+    color: var(--verde-oscuro);
+}
+
+.bloque ul {
+    margin: 0;
+    padding-left: 20px;
+    line-height: 1.7;
+    color: var(--texto-suave);
+}
+
+.bloque p {
+    line-height: 1.6;
+}
+
+.horario {
+    padding-left: 0 !important;
+    list-style: none;
+}
+
+.horario li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--borde);
+}
+
+.horario strong {
+    color: var(--texto);
+    white-space: nowrap;
+}
+
+.nota {
+    margin: 12px 0 0;
+    font-size: 0.85rem;
+    color: var(--naranja);
+}
+
+details {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--borde);
+}
+
+summary {
+    font-weight: 600;
+    cursor: pointer;
+}
+
+details p {
+    margin: 10px 0 0;
+    color: var(--texto-suave);
+}
+
+.bloque--contacto {
+    text-align: center;
+    border-top-color: var(--naranja);
+}
+
+.bloque--contacto .boton {
+    margin-top: 6px;
+}
+/* ===== Contenedor general ===== */
+.contenedor {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+}
+
+/* ===== Intro ===== */
+.intro {
+    max-width: 700px;
+    margin: 0 auto 32px;
+    text-align: center;
+}
+
+.intro h1 {
+    margin: 0 0 12px;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    color: var(--verde-oscuro);
+}
+
+.intro p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--texto-suave);
+}
+
+/* ===== Filtros ===== */
+.filtros {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 36px;
+}
+
+.filtro {
+    padding: 10px 22px;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--verde);
+    background: #fff;
+    border: 2px solid var(--verde);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.filtro:hover {
+    background: #e8f2f0;
+}
+
+.filtro.activo {
+    color: #fff;
+    background: var(--verde);
+}
+
+.filtro:focus-visible {
+    outline: 3px solid var(--naranja);
+    outline-offset: 2px;
+}
+
+/* Oculta las tarjetas filtradas */
+.tarjeta.oculta {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .contenedor {
+        padding: 24px 16px 40px;
+    }
+}
+
+/* ===== Móvil ===== */
+@media (max-width: 600px) {
+    .cabecera {
+        justify-content: center;
+        padding: 14px 16px;
+    }
+
+    .cabecera__nav {
+        gap: 16px;
+    }
+
+    .cabecera__marca {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .cabecera__pagina {
+        padding-left: 0;
+        border-left: none;
+    }
+
+    .tarjetas {
+        gap: 20px;
+    }
+
+    .bloque {
+        padding: 20px 16px;
+    }
+}
