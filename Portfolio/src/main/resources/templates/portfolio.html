@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="#{portfolio.titulo}">Portfolio</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="main-portfolio">
+
+    <h1 th:text="#{portfolio.titulo}">Portfolio</h1>
+
+    <!-- Filtro: se envía al servidor por GET y Spring filtra la lista -->
+    <form class="filtro" th:action="@{/portfolio}" method="get">
+        <div class="filtro-campo">
+            <label for="categoria" th:text="#{portfolio.filtro.categoria}">Categoría</label>
+            <select name="categoria" id="categoria">
+                <option value="todas" th:selected="${categoria == 'todas'}" th:text="#{portfolio.filtro.todas}">Todas</option>
+                <option value="aplicacion" th:selected="${categoria == 'aplicacion'}" th:text="#{portfolio.categoria.aplicacion}">Aplicaciones</option>
+                <option value="sitio-web" th:selected="${categoria == 'sitio-web'}" th:text="#{portfolio.categoria.sitio-web}">Sitios web</option>
+                <option value="diseno" th:selected="${categoria == 'diseno'}" th:text="#{portfolio.categoria.diseno}">Diseño</option>
+            </select>
+        </div>
+
+        <div class="filtro-campo">
+            <label for="anio" th:text="#{portfolio.filtro.anio}">Año</label>
+            <input type="number" name="anio" id="anio" th:value="${anio}"
+                   th:placeholder="#{portfolio.filtro.anioPlaceholder}" placeholder="Ej. 2025">
+        </div>
+
+        <button type="submit" th:text="#{portfolio.filtro.boton}">Filtrar</button>
+    </form>
+
+    <p class="aviso-error" th:if="${anioInvalido}" th:text="#{portfolio.anioInvalido}">Introduce un año válido</p>
+
+    <div class="resultados">
+        <p th:text="#{portfolio.resultados(${#lists.size(proyectos)})}">6 proyectos encontrados</p>
+        <a th:href="@{/portfolio}" th:text="#{portfolio.mostrarTodos}">Mostrar todos</a>
+    </div>
+
+    <p class="sin-resultados" th:if="${#lists.isEmpty(proyectos)}" th:text="#{portfolio.sinResultados}">No se encontraron proyectos</p>
+
+    <section class="proyectos">
+        <div class="tarjeta" th:each="proyecto : ${proyectos}">
+
+            <img class="tarjeta-imagen"
+                 th:if="${proyecto.imagen() != null}"
+                 th:src="@{${proyecto.imagen()}}"
+                 th:alt="#{portfolio.imagenAlt(${proyecto.titulo()})}">
+
+            <div class="tarjeta-cuerpo">
+
+                <div class="tarjeta-cabecera">
+                    <h2 th:text="${proyecto.titulo()}">Título del proyecto</h2>
+
+                    <th:block th:switch="${proyecto.estado()}">
+                        <span class="estado estado-en-curso" th:case="'en-curso'" th:text="#{portfolio.estado.enCurso}">En curso</span>
+                        <span class="estado estado-terminado" th:case="'terminado'" th:text="#{portfolio.estado.terminado}">Terminado</span>
+                    </th:block>
+                </div>
+
+                <p class="tarjeta-meta">
+                    <span th:text="#{${'portfolio.categoria.' + proyecto.categoria()}}">Aplicaciones</span>
+                    ·
+                    <span th:text="${proyecto.anio()}">2025</span>
+                </p>
+
+                <p class="tarjeta-descripcion" th:text="#{${proyecto.descripcion()}}">Descripción del proyecto.</p>
+
+                <div class="tarjeta-tecnologias" th:unless="${#lists.isEmpty(proyecto.tecnologias())}">
+                    <h3 th:text="#{portfolio.tecnologias}">Tecnologías</h3>
+                    <ul>
+                        <li th:each="tecnologia : ${proyecto.tecnologias()}" th:text="${tecnologia}">Java</li>
+                    </ul>
+                </div>
+
+                <a class="tarjeta-enlace"
+                   th:if="${proyecto.enlace() != null}"
+                   th:href="${proyecto.enlace()}"
+                   th:text="#{portfolio.verProyecto}"
+                   target="_blank" rel="noopener">Ver proyecto</a>
+
+            </div>
+        </div>
+    </section>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="#{vista.titulo}">Vista previa</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main>
+    <section class="perfil">
+        <h1 th:unless="${#strings.isEmpty(form.nombre)}" th:text="${form.nombre}">Nombre</h1>
+        <p class="titular" th:unless="${#strings.isEmpty(form.titular)}" th:text="${form.titular}">Titular</p>
+        <p class="presentacion" th:unless="${#strings.isEmpty(form.presentacion)}" th:text="${form.presentacion}">Presentación</p>
+    </section>
+
+    <section class="contacto" th:unless="${#strings.isEmpty(form.ciudad) and #strings.isEmpty(form.correo)}">
+        <h2 th:text="#{cv.contacto}">Contacto</h2>
+        <p th:unless="${#strings.isEmpty(form.ciudad)}" th:text="${form.ciudad}">Ciudad</p>
+        <a th:unless="${#strings.isEmpty(form.correo)}"
+           th:href="'mailto:' + ${form.correo}"
+           th:text="${form.correo}">correo@ejemplo.com</a>
+    </section>
+
+    <section>
+        <h2 th:text="#{vista.proyectos}">Proyectos</h2>
+
+        <p class="sin-resultados" th:if="${#lists.isEmpty(form.proyectos)}" th:text="#{vista.sinProyectos}">
+            No has añadido ningún proyecto
+        </p>
+
+        <div class="proyectos" th:unless="${#lists.isEmpty(form.proyectos)}">
+            <div class="tarjeta" th:each="proyecto : ${form.proyectos}">
+                <div class="tarjeta-cuerpo">
+
+                    <div class="tarjeta-cabecera">
+                        <h2 th:text="${proyecto.titulo}">Título del proyecto</h2>
+
+                        <th:block th:switch="${proyecto.estado}">
+                            <span class="estado estado-en-curso" th:case="'en-curso'" th:text="#{portfolio.estado.enCurso}">En curso</span>
+                            <span class="estado estado-terminado" th:case="'terminado'" th:text="#{portfolio.estado.terminado}">Terminado</span>
+                        </th:block>
+                    </div>
+
+                    <p class="tarjeta-meta">
+                        <span th:text="#{${'portfolio.categoria.' + proyecto.categoria}}">Aplicaciones</span>
+                        ·
+                        <span th:text="${proyecto.anio}">2025</span>
+                    </p>
+
+                    <p class="tarjeta-descripcion" th:text="${proyecto.descripcion}">Descripción del proyecto.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

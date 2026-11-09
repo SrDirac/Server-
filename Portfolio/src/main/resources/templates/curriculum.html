@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="#{cv.titulo}">Currículum</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main>
+
+    <section class="perfil">
+        <h1 th:text="${perfil.nombre()}">Nombre</h1>
+        <p class="titular" th:text="${perfil.titularProfesional()}">Titular profesional</p>
+        <p class="presentacion" th:text="${perfil.presentacion()}">Presentación</p>
+    </section>
+
+    <section class="contacto" th:if="${not #strings.isEmpty(contacto?.correo())}">
+        <h2 th:text="#{cv.contacto}">Contacto</h2>
+        <a th:href="'mailto:' + ${contacto.correo()}" th:text="${contacto.correo()}"></a>
+    </section>
+
+    <section class="formacion">
+        <h2 th:text="#{cv.formacion}">Formación</h2>
+        <ul class="lista-cv">
+            <li th:each="estudio : ${estudios}">
+                <span class="estudio-nombre" th:text="#{${estudio.nombre()}}">Nombre de los estudios</span>
+                <span class="estudio-centro" th:text="${estudio.centro()}">Centro</span>
+                <span class="estudio-fecha" th:unless="${estudio.enCurso()}" th:text="${estudio.anioFinalizacion()}">2022</span>
+                <span class="estudio-fecha en-curso" th:if="${estudio.enCurso()}" th:text="#{cv.enCurso}"></span>
+            </li>
+        </ul>
+    </section>
+
+    <section class="experiencia">
+        <h2 th:text="#{cv.experiencia}">Experiencia</h2>
+        <p th:if="${#arrays.isEmpty(experiencias)}" th:text="#{cv.sinExperiencia}"></p>
+        <ul class="lista-cv" th:unless="${#arrays.isEmpty(experiencias)}">
+            <li th:each="experiencia : ${experiencias}">
+                <span class="experiencia-puesto" th:text="#{${experiencia.puesto()}}">Puesto</span>
+                <span class="experiencia-organizacion" th:text="${experiencia.organizacion()}">Organización</span>
+                <span class="experiencia-inicio" th:text="${experiencia.anioInicio()}">2024</span> –
+                <span class="experiencia-final" th:unless="${experiencia.enCurso()}" th:text="${experiencia.anioFin()}">2025</span>
+                <span class="experiencia-final" th:if="${experiencia.enCurso()}" th:text="#{cv.actualidad}"></span>
+            </li>
+        </ul>
+    </section>
+
+    <section class="habilidades">
+        <h2 th:text="#{cv.habilidades}">Habilidades</h2>
+        <ul class="lista-cv" th:unless="${#arrays.isEmpty(habilidades)}">
+            <li th:each="habilidad : ${habilidades}" th:switch="${habilidad.nivel()}">
+                <span class="nivel-alto" th:case="'alto'" th:text="#{cv.nivel.alto(${habilidad.nombre()})}"></span>
+                <span class="nivel-medio" th:case="'medio'" th:text="#{cv.nivel.medio(${habilidad.nombre()})}"></span>
+                <span class="nivel-bajo" th:case="'bajo'" th:text="#{cv.nivel.bajo(${habilidad.nombre()})}"></span>
+            </li>
+        </ul>
+    </section>
+
+    <section class="idiomas">
+        <h2 th:text="#{cv.idiomas}">Idiomas</h2>
+        <ul class="lista-cv" th:unless="${#arrays.isEmpty(idiomas)}">
+            <li th:each="idioma : ${idiomas}" th:switch="${idioma.nivel()}">
+                <span class="nivel-alto" th:case="'alto'" th:text="#{cv.nivel.alto(${#messages.msg(idioma.nombre())})}"></span>
+                <span class="nivel-medio" th:case="'medio'" th:text="#{cv.nivel.medio(${#messages.msg(idioma.nombre())})}"></span>
+                <span class="nivel-bajo" th:case="'bajo'" th:text="#{cv.nivel.bajo(${#messages.msg(idioma.nombre())})}"></span>
+            </li>
+        </ul>
+    </section>
+
+    <p class="no-imprimir aviso-imprimir" th:utext="#{cv.avisoImprimir}"></p>
+
+</main>
+
+</body>
+</html>

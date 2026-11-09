@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fragmentos</title>
+</head>
+<body>
+
+<header th:fragment="header" class="header no-imprimir">
+    <nav class="menu">
+        <a th:href="@{/curriculum}" th:text="#{nav.curriculum}">Currículum</a>
+        <a th:href="@{/portfolio}" th:text="#{nav.portfolio}">Portfolio</a>
+        <a th:href="@{/portfolio/editar}" th:text="#{nav.editar}">Editar portfolio</a>
+    </nav>
+
+    <div class="idiomas-selector">
+        <a href="?lang=es" lang="es">ES</a>
+        <a href="?lang=en" lang="en">EN</a>
+    </div>
+</header>
+
+</body>
+</html>

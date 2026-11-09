@@ -1,0 +1,765 @@
+/* Inspirado en worksruthi.com: fondo crema, rojo intenso, titulares
+   condensados en mayúsculas y etiquetas en monoespaciada */
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Geist:wght@400;500;700&family=Geist+Mono:wght@400;500&display=swap");
+
+/* ===== Variables ===== */
+:root {
+    --crema: #f3f3e9;
+    --tinta: #1c1b1a;
+    --rojo: #e33529;
+    --rojo-oscuro: #b8261c;
+    --gris: #6f6b64;
+    --linea: rgba(160, 156, 146, 0.45);
+    --suave: rgba(160, 156, 146, 0.18);
+
+    /* Colores obligatorios del enunciado: niveles y estados */
+    --verde: #198754;
+    --verde-claro: #8fd19e;
+    --verde-muy-claro: #d1e7dd;
+    --gris-estado: #6c757d;
+
+    --fuente-titulo: "Anton", Impact, "Arial Narrow", sans-serif;
+    --fuente-texto: "Geist", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --fuente-mono: "Geist Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ===== Base ===== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: var(--crema);
+    color: var(--tinta);
+    font-family: var(--fuente-texto);
+    line-height: 1.5;
+}
+
+main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+    counter-reset: seccion;
+}
+
+section {
+    margin-bottom: 3.5rem;
+}
+
+/* Numeración automática de secciones (01, 02…): sin texto, así no hay nada que traducir */
+main > section > h2 {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+}
+
+main > section > h2::before {
+    counter-increment: seccion;
+    content: counter(seccion, decimal-leading-zero);
+    margin-top: 0.2em;
+    font-family: var(--fuente-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: var(--tinta);
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--fuente-titulo);
+    font-weight: 400;
+    text-transform: uppercase;
+    color: var(--rojo);
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(3.5rem, 13vw, 8rem);
+    line-height: 0.85;
+    letter-spacing: -0.01em;
+}
+
+h2 {
+    margin: 0 0 1rem;
+    padding-bottom: 0.4rem;
+    font-size: clamp(2rem, 6vw, 2.75rem);
+    line-height: 1;
+    border-bottom: 2px solid var(--tinta);
+}
+
+a {
+    color: var(--rojo);
+}
+
+::selection {
+    background-color: var(--rojo);
+    color: var(--crema);
+}
+
+/* Foco visible al navegar con teclado */
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--rojo);
+    outline-offset: 3px;
+}
+
+/* ===== Header ===== */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 1.5rem;
+    background-color: var(--tinta);
+    border-bottom: 4px solid var(--rojo);
+    font-family: var(--fuente-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.header a {
+    color: var(--crema);
+    text-decoration: none;
+}
+
+/* Subrayado rojo que crece al pasar el ratón */
+.menu a {
+    padding: 0.2rem 0;
+    background-image: linear-gradient(var(--rojo), var(--rojo));
+    background-size: 0 2px;
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    transition: background-size 0.2s, color 0.2s;
+}
+
+.menu a:hover {
+    color: var(--crema);
+    background-size: 100% 2px;
+}
+
+.menu,
+.idiomas-selector {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.idiomas-selector {
+    gap: 0.4rem;
+}
+
+.idiomas-selector a {
+    padding: 0.15rem 0.55rem;
+    border: 1px solid var(--crema);
+    border-radius: 999px;
+}
+
+.idiomas-selector a:hover {
+    background-color: var(--rojo);
+    border-color: var(--rojo);
+    color: var(--crema);
+}
+
+/* ===== Perfil ===== */
+.perfil {
+    margin-bottom: 4rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 2px solid var(--tinta);
+}
+
+/* Titular como una pegatina ligeramente girada */
+.titular {
+    display: inline-block;
+    margin: 1.25rem 0 1.5rem;
+    padding: 0.45rem 0.9rem;
+    background-color: var(--tinta);
+    color: var(--crema);
+    font-family: var(--fuente-mono);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transform: rotate(-1.5deg);
+}
+
+.titular::before {
+    content: "{ ";
+    color: var(--rojo);
+}
+
+.titular::after {
+    content: " }";
+    color: var(--rojo);
+}
+
+.presentacion {
+    max-width: 38rem;
+    margin: 0;
+    font-size: 1.2rem;
+    line-height: 1.55;
+}
+
+/* ===== Contacto ===== */
+.contacto p {
+    margin: 0 0 0.5rem;
+}
+
+/* El correo no va en mayúsculas para que se lea tal cual se escribe */
+.contacto a {
+    font-family: var(--fuente-titulo);
+    font-size: clamp(1.25rem, 5vw, 2rem);
+    overflow-wrap: anywhere;
+    text-decoration: none;
+    border-bottom: 3px solid var(--rojo);
+}
+
+.contacto a:hover {
+    color: var(--tinta);
+    border-color: var(--tinta);
+}
+
+/* ===== Listas de formación y experiencia ===== */
+.lista-cv {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.lista-cv li {
+    padding: 1rem 0 1rem 1rem;
+    border-bottom: 1px solid var(--linea);
+    border-left: 3px solid transparent;
+    transition: border-color 0.15s, background-color 0.15s;
+}
+
+.formacion .lista-cv li:hover,
+.experiencia .lista-cv li:hover {
+    border-left-color: var(--rojo);
+    background-color: var(--suave);
+}
+
+.lista-cv li:last-child {
+    border-bottom: none;
+}
+
+/* Título de cada elemento en su propia línea */
+.estudio-nombre,
+.experiencia-puesto {
+    display: block;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+/* Centro u organización debajo, en gris */
+.estudio-centro,
+.experiencia-organizacion {
+    display: block;
+    color: var(--gris);
+}
+
+/* Años: en monoespaciada, como una etiqueta */
+.estudio-fecha,
+.experiencia-inicio,
+.experiencia-final {
+    font-family: var(--fuente-mono);
+    font-size: 0.85rem;
+    color: var(--gris);
+}
+
+/* «En curso» en verde, igual que la etiqueta de estado de los proyectos */
+.en-curso {
+    display: inline-block;
+    margin-top: 0.2rem;
+    padding: 0.1rem 0.5rem;
+    background-color: var(--verde);
+    color: #ffffff;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+/* ===== Habilidades e idiomas como etiquetas ===== */
+.habilidades .lista-cv,
+.idiomas .lista-cv {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.habilidades .lista-cv li,
+.idiomas .lista-cv li {
+    padding: 0;
+    border: none;
+}
+
+/* ===== Niveles (colores fijados por el enunciado) ===== */
+.nivel-alto,
+.nivel-medio,
+.nivel-bajo {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-family: var(--fuente-mono);
+    font-size: 0.85rem;
+    transition: transform 0.15s;
+}
+
+.nivel-alto:hover,
+.nivel-medio:hover,
+.nivel-bajo:hover {
+    transform: translateY(-2px) rotate(-1deg);
+}
+
+.nivel-alto {
+    background-color: var(--verde);
+    color: #ffffff;
+}
+
+.nivel-medio {
+    background-color: var(--verde-claro);
+    color: #212529;
+}
+
+.nivel-bajo {
+    background-color: var(--verde-muy-claro);
+    color: #212529;
+}
+
+/* ===== Avisos ===== */
+.aviso-imprimir {
+    margin: 2rem 0 0;
+    padding: 1rem 1.25rem;
+    border: 2px dashed var(--tinta);
+    font-size: 0.95rem;
+}
+
+.aviso-imprimir strong {
+    padding: 0 0.3rem;
+    background-color: var(--tinta);
+    color: var(--crema);
+    font-family: var(--fuente-mono);
+    font-weight: 500;
+}
+
+.aviso-error {
+    margin: 0 0 1.5rem;
+    padding: 0.75rem 1rem;
+    background-color: var(--rojo);
+    color: var(--crema);
+    font-family: var(--fuente-mono);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* Separación bajo el título en las páginas sin sección de perfil (portfolio, editar) */
+main > h1 {
+    margin-bottom: 2rem;
+}
+
+/* ===== Portfolio: página ===== */
+.main-portfolio {
+    max-width: 1140px;
+}
+
+/* ===== Portfolio: filtro ===== */
+.filtro {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    background-color: var(--suave);
+    border: 2px solid var(--tinta);
+    box-shadow: 6px 6px 0 var(--tinta);
+}
+
+.filtro-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+/* ===== Formularios (filtro y editar) ===== */
+.filtro label,
+.campo label {
+    font-family: var(--fuente-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gris);
+}
+
+.filtro select,
+.filtro input,
+.campo input,
+.campo select,
+.campo textarea {
+    padding: 0.55rem 0.7rem;
+    background-color: transparent;
+    color: var(--tinta);
+    border: 2px solid var(--tinta);
+    border-radius: 0;
+    font: inherit;
+}
+
+.filtro select:focus,
+.filtro input:focus,
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+    outline: none;
+    border-color: var(--rojo);
+    box-shadow: 3px 3px 0 var(--rojo);
+}
+
+.filtro input {
+    width: 8rem;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 1.25rem;
+}
+
+.campo textarea {
+    min-height: 6rem;
+    resize: vertical;
+}
+
+.error-campo {
+    font-family: var(--fuente-mono);
+    font-size: 0.8rem;
+    color: var(--rojo);
+}
+
+.error-campo::before {
+    content: "✱ ";
+}
+
+/* Campo con error: borde rojo (solo si el servidor ha puesto el mensaje) */
+.campo:has(.error-campo) input,
+.campo:has(.error-campo) select,
+.campo:has(.error-campo) textarea {
+    border-color: var(--rojo);
+    background-color: rgba(227, 53, 41, 0.06);
+}
+
+/* Botones */
+button {
+    padding: 0.6rem 1.5rem;
+    background-color: var(--rojo);
+    color: var(--crema);
+    border: 2px solid var(--rojo);
+    border-radius: 999px;
+    font-family: var(--fuente-titulo);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+button:hover {
+    background-color: var(--tinta);
+    border-color: var(--tinta);
+}
+
+button:active {
+    transform: translateY(2px);
+}
+
+/* Botón secundario: quitar fila */
+.fila-proyecto button {
+    align-self: flex-start;
+    background-color: transparent;
+    color: var(--tinta);
+    border-color: var(--tinta);
+    font-size: 0.95rem;
+}
+
+.fila-proyecto button:hover {
+    background-color: var(--tinta);
+    color: var(--crema);
+}
+
+/* ===== Editar: proyectos ===== */
+.proyectos-form {
+    margin: 2.5rem 0 2rem;
+    counter-reset: fila;
+}
+
+.proyectos-form > p:first-of-type {
+    font-family: var(--fuente-mono);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: var(--gris);
+}
+
+.fila-proyecto {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+    padding: 2.25rem 1.5rem 1.5rem;
+    border: 2px solid var(--tinta);
+    box-shadow: 6px 6px 0 var(--tinta);
+}
+
+/* Número de la fila en la esquina (01, 02…) */
+.fila-proyecto::before {
+    counter-increment: fila;
+    content: counter(fila, decimal-leading-zero);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    padding: 0.2rem 0.6rem;
+    background-color: var(--rojo);
+    color: var(--crema);
+    font-family: var(--fuente-mono);
+    font-size: 0.8rem;
+}
+
+.anadir-proyecto {
+    background-color: transparent;
+    color: var(--rojo);
+    border-style: dashed;
+}
+
+.anadir-proyecto:hover {
+    background-color: var(--rojo);
+    border-color: var(--rojo);
+    color: var(--crema);
+}
+
+.aviso-limite {
+    font-family: var(--fuente-mono);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: var(--gris);
+}
+
+/* ===== Portfolio: mensajes y resultados ===== */
+.resultados {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-family: var(--fuente-mono);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: var(--gris);
+}
+
+.resultados p {
+    margin: 0;
+}
+
+.resultados a {
+    font-weight: 500;
+}
+
+.sin-resultados {
+    padding: 3rem 2rem;
+    text-align: center;
+    font-family: var(--fuente-mono);
+    text-transform: uppercase;
+    color: var(--gris);
+    border: 2px dashed var(--linea);
+}
+
+/* ===== Portfolio: tarjetas ===== */
+.proyectos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.75rem;
+}
+
+.tarjeta {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--crema);
+    border: 2px solid var(--tinta);
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.tarjeta:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0 var(--rojo);
+}
+
+.tarjeta:hover .tarjeta-imagen {
+    filter: saturate(1.15);
+}
+
+.tarjeta-imagen {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-bottom: 2px solid var(--tinta);
+    transition: filter 0.2s;
+}
+
+.tarjeta-cuerpo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.25rem;
+    flex: 1;
+}
+
+.tarjeta-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.tarjeta-cabecera h2 {
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-size: 1.6rem;
+    color: var(--tinta);
+}
+
+.tarjeta-meta {
+    margin: 0;
+    font-family: var(--fuente-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--gris);
+}
+
+.tarjeta-descripcion {
+    margin: 0;
+}
+
+.tarjeta-tecnologias h3 {
+    margin: 0.25rem 0 0.4rem;
+    font-family: var(--fuente-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--gris);
+}
+
+.tarjeta-tecnologias ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tarjeta-tecnologias li {
+    padding: 0.15rem 0.6rem;
+    border: 1px solid var(--tinta);
+    border-radius: 999px;
+    font-family: var(--fuente-mono);
+    font-size: 0.75rem;
+}
+
+.tarjeta-enlace {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    font-family: var(--fuente-titulo);
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.tarjeta-enlace::after {
+    content: " →";
+}
+
+.tarjeta-enlace:hover {
+    color: var(--tinta);
+}
+
+/* ===== Etiquetas de estado: verde «En curso», gris «Terminado» ===== */
+.estado {
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-family: var(--fuente-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.estado-en-curso {
+    background-color: var(--verde);
+    color: #ffffff;
+}
+
+.estado-terminado {
+    background-color: var(--gris-estado);
+    color: #ffffff;
+}
+
+/* ===== Móvil ===== */
+@media (max-width: 600px) {
+    .header {
+        padding: 0.7rem 1rem;
+    }
+
+    .menu {
+        gap: 1rem;
+    }
+
+    main {
+        padding: 2rem 1rem 3rem;
+    }
+
+    .resultados {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+
+/* Sin animaciones para quien las tenga desactivadas en el sistema */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}
+
+/* ===== Impresión (siempre al final) ===== */
+@media print {
+    .no-imprimir {
+        display: none;
+    }
+
+    body {
+        background-color: #ffffff;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    main {
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        font-size: 4rem;
+    }
+}
+
+.boton-oculto {
+    position: absolute;
+    left: -9999px;
+}
