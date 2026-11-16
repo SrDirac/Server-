@@ -1,5 +1,4 @@
-/* Inspirado en worksruthi.com: fondo crema, rojo intenso, titulares
-   condensados en mayúsculas y etiquetas en monoespaciada */
+
 @import url("https://fonts.googleapis.com/css2?family=Anton&family=Geist:wght@400;500;700&family=Geist+Mono:wght@400;500&display=swap");
 
 /* ===== Variables ===== */
@@ -707,8 +706,183 @@ button:active {
     color: #ffffff;
 }
 
+/* ===== Portfolio: proyecto de interés ===== */
+.destacado {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    margin-bottom: 2.5rem;
+    background-color: var(--crema);
+    border: 2px solid var(--tinta);
+    box-shadow: 8px 8px 0 var(--rojo);
+}
+
+.destacado-imagen {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: top;
+    border-right: 2px solid var(--tinta);
+}
+
+.destacado-cuerpo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem;
+}
+
+.destacado-cuerpo h2 {
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+}
+
+.destacado-cuerpo p {
+    margin: 0;
+}
+
+/* Etiqueta «Proyecto de interés» como la pegatina del titular */
+.destacado-etiqueta {
+    align-self: flex-start;
+    padding: 0.3rem 0.7rem;
+    background-color: var(--tinta);
+    color: var(--crema);
+    font-family: var(--fuente-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transform: rotate(-1.5deg);
+}
+
+.destacado-enlaces {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+}
+
+.destacado-enlaces .tarjeta-enlace {
+    margin: 0;
+    padding: 0;
+}
+
+/* Enlace con aspecto de botón (mismo estilo que button) */
+.destacado-boton {
+    display: inline-block;
+    padding: 0.6rem 1.5rem;
+    background-color: var(--rojo);
+    color: var(--crema);
+    border: 2px solid var(--rojo);
+    border-radius: 999px;
+    font-family: var(--fuente-titulo);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    transition: background-color 0.15s;
+}
+
+.destacado-boton:hover {
+    background-color: var(--tinta);
+    border-color: var(--tinta);
+}
+
+/* ===== Página de un proyecto (teclea) ===== */
+.volver {
+    display: inline-block;
+    margin-bottom: 2rem;
+    font-family: var(--fuente-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+}
+
+.volver::before {
+    content: "← ";
+}
+
+.main-proyecto .perfil .tarjeta-meta {
+    margin: 1.5rem 0 1.25rem;
+}
+
+.proyecto-captura {
+    display: block;
+    width: 100%;
+    margin-top: 2rem;
+    border: 2px solid var(--tinta);
+    box-shadow: 8px 8px 0 var(--tinta);
+}
+
+.proyecto-parrafo {
+    max-width: 42rem;
+    margin: 0 0 1rem;
+}
+
+/* Cifras de calidad: número grande y texto debajo */
+.cifras {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cifras li {
+    padding: 1.25rem;
+    border: 2px solid var(--tinta);
+}
+
+.cifra-numero {
+    display: block;
+    font-family: var(--fuente-titulo);
+    font-size: 3.5rem;
+    line-height: 1;
+    color: var(--rojo);
+}
+
+.cifra-texto {
+    display: block;
+    margin-top: 0.5rem;
+    font-family: var(--fuente-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--gris);
+}
+
+/* Fases numeradas 01, 02… como las secciones */
+.fases {
+    counter-reset: fase;
+}
+
+.fases li {
+    counter-increment: fase;
+}
+
+.fases li::before {
+    content: counter(fase, decimal-leading-zero) "  ";
+    font-family: var(--fuente-mono);
+    font-size: 0.85rem;
+    color: var(--rojo);
+}
+
 /* ===== Móvil ===== */
 @media (max-width: 600px) {
+    .destacado {
+        grid-template-columns: 1fr;
+    }
+
+    .destacado-imagen {
+        border-right: none;
+        border-bottom: 2px solid var(--tinta);
+    }
+
     .header {
         padding: 0.7rem 1rem;
     }

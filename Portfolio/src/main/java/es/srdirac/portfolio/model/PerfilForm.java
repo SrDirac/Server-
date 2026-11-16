@@ -3,6 +3,10 @@ package es.srdirac.portfolio.model;
 import java.util.ArrayList;
 import java.util.List;
 
+// Clase normal y no record: Spring crea este objeto con el constructor vacío y lo rellena
+// con los datos del formulario mediante los setters. Además, la lista de proyectos cambia
+// al añadir o quitar filas, así que el objeto no puede ser inmutable.
+
 public class PerfilForm {
 
     private String nombre;

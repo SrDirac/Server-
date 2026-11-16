@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--/* El idioma de la página sale del idioma activo (#locale), que guarda la cookie de IdiomaConfig */-->
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -7,18 +8,28 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
+<!--/* Inserta el header común (menú e idiomas) desde templates/fragments/header.html */-->
 <header th:replace="~{fragments/header :: header}"></header>
 
+<!--/* Esta página solo se muestra cuando el POST ha validado sin errores.
+       "form" es el mismo PerfilForm que rellenó el usuario, y el controlador ya le ha quitado las filas vacías.
+       Aquí no hay th:object, así que los datos se leen con ${form.campo} y no con *{...} */-->
 <main>
+
+    <!--/* Perfil: cada dato solo se muestra si se ha introducido.
+           #strings.isEmpty devuelve true si el texto es null o está vacío */-->
     <section class="perfil">
         <h1 th:unless="${#strings.isEmpty(form.nombre)}" th:text="${form.nombre}">Nombre</h1>
         <p class="titular" th:unless="${#strings.isEmpty(form.titular)}" th:text="${form.titular}">Titular</p>
         <p class="presentacion" th:unless="${#strings.isEmpty(form.presentacion)}" th:text="${form.presentacion}">Presentación</p>
     </section>
 
+    <!--/* Contacto: el apartado entero se oculta solo si faltan los dos datos (por eso el "and").
+           Si hay al menos uno, sale el título y solo el dato que exista */-->
     <section class="contacto" th:unless="${#strings.isEmpty(form.ciudad) and #strings.isEmpty(form.correo)}">
         <h2 th:text="#{cv.contacto}">Contacto</h2>
         <p th:unless="${#strings.isEmpty(form.ciudad)}" th:text="${form.ciudad}">Ciudad</p>
+        <!--/* mailto: hace que el enlace abra el programa de correo */-->
         <a th:unless="${#strings.isEmpty(form.correo)}"
            th:href="'mailto:' + ${form.correo}"
            th:text="${form.correo}">correo@ejemplo.com</a>
@@ -27,10 +38,13 @@
     <section>
         <h2 th:text="#{vista.proyectos}">Proyectos</h2>
 
+        <!--/* Si no queda ningún proyecto (el usuario no rellenó ninguna fila), sale el mensaje del enunciado */-->
         <p class="sin-resultados" th:if="${#lists.isEmpty(form.proyectos)}" th:text="#{vista.sinProyectos}">
             No has añadido ningún proyecto
         </p>
 
+        <!--/* Si hay proyectos, una tarjeta por cada uno. Se reutilizan las clases CSS de las tarjetas del portfolio.
+               ProyectoForm es una clase con getters, así que se escribe proyecto.titulo sin paréntesis */-->
         <div class="proyectos" th:unless="${#lists.isEmpty(form.proyectos)}">
             <div class="tarjeta" th:each="proyecto : ${form.proyectos}">
                 <div class="tarjeta-cuerpo">
@@ -38,6 +52,8 @@
                     <div class="tarjeta-cabecera">
                         <h2 th:text="${proyecto.titulo}">Título del proyecto</h2>
 
+                        <!--/* th:switch mira el estado enviado y cada th:case pone su etiqueta: verde si está en curso, gris si está terminado.
+                               th:block no aparece en el HTML final, solo sirve para colocar el switch */-->
                         <th:block th:switch="${proyecto.estado}">
                             <span class="estado estado-en-curso" th:case="'en-curso'" th:text="#{portfolio.estado.enCurso}">En curso</span>
                             <span class="estado estado-terminado" th:case="'terminado'" th:text="#{portfolio.estado.terminado}">Terminado</span>
@@ -45,11 +61,13 @@
                     </div>
 
                     <p class="tarjeta-meta">
+                        <!--/* Monta la clave a partir del código: diseno → portfolio.categoria.diseno, y la traduce */-->
                         <span th:text="#{${'portfolio.categoria.' + proyecto.categoria}}">Aplicaciones</span>
                         ·
                         <span th:text="${proyecto.anio}">2025</span>
                     </p>
 
+                    <!--/* La descripción es texto escrito por el usuario, así que se muestra tal cual, sin traducir */-->
                     <p class="tarjeta-descripcion" th:text="${proyecto.descripcion}">Descripción del proyecto.</p>
                 </div>
             </div>

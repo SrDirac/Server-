@@ -1,5 +1,6 @@
 package es.srdirac.portfolio.model;
 
+//Clase del formulario de Proyectos
 public class ProyectoForm {
 
     private String titulo;
@@ -9,6 +10,8 @@ public class ProyectoForm {
     private Integer anio;
 
 
+    //Función que válida si el formulario enviado está vacío para luego en el Controller validar el formato,
+    //Si cualquier de los valores está relleno, devolverá false,  hace una comprobación de todos los atributos.
     public boolean estaVacio(){
         return (titulo==null ||titulo.isBlank()) &&
         (categoria==null ||categoria.isBlank()) &&
@@ -16,7 +19,7 @@ public class ProyectoForm {
         (descripcion==null || descripcion.isBlank()) &&
         anio==null;
     }
-
+    //Getters y setters
     public String getTitulo() {
         return titulo;
     }

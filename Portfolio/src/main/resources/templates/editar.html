@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--/* El idioma de la página sale del idioma activo (#locale), que guarda la cookie de IdiomaConfig */-->
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -7,15 +8,31 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
+<!--/* Inserta el header común (menú e idiomas) desde templates/fragments/header.html */-->
 <header th:replace="~{fragments/header :: header}"></header>
 <main>
     <h1 th:text="#{editar.titulo}">Editar portfolio</h1>
+
+    <!--/* Aviso general: solo sale si el mapa de errores que pasa el controlador no está vacío.
+           En el GET y al añadir o quitar filas, el controlador pasa un mapa vacío para que esto no falle */-->
     <p class="aviso-error" th:unless="${errores.isEmpty()}" th:text="#{editar.avisoErrores}">Revisa los campos indicados</p>
+
+    <!--/* El formulario se envía por POST a /portfolio/editar.
+           th:object="${form}" enlaza el formulario con el PerfilForm del controlador: dentro, *{...} se refiere a sus atributos.
+           novalidate desactiva la validación del navegador para que valide el servidor */-->
     <form th:action="@{/portfolio/editar}" method="post" th:object="${form}" novalidate>
+
+        <!--/* Botón oculto: al pulsar Enter, el navegador usa el primer botón del formulario.
+               Si no estuviera aquí, el primero sería «Quitar» de la primera fila y Enter borraría un proyecto */-->
         <button type="submit" name="accion" value="previsualizar" class="boton-oculto" tabindex="-1" aria-hidden="true"
                 th:text="#{editar.boton.previsualizar}">
             Generar vista previa
         </button>
+
+        <!--/* Datos personales. th:field pone el name, el id y el value del campo,
+               así que al volver al formulario se conserva lo que había escrito.
+               Cada error se busca en el mapa por el nombre del campo, y su valor es una clave
+               de messages que #{${...}} traduce al idioma activo */-->
         <div class="campo">
             <label for="nombre" th:text="#{editar.nombre}">Nombre completo</label>
             <input type="text" id="nombre" th:field="*{nombre}">
@@ -48,11 +65,18 @@
 
         <div class="proyectos-form">
             <h2 th:text="#{editar.proyectos}">Proyectos</h2>
+
+            <!--/* Contador: número de filas actual y máximo, que viene de portfolio.max-proyectos en application.properties */-->
             <p th:text="#{editar.contador(${#lists.size(form.proyectos)}, ${maxProyectos})}">1 de 5 proyectos</p>
             <p class="error-campo" th:if="${errores.containsKey('limite')}" th:text="#{${errores['limite']}}"></p>
 
+            <!--/* Una fila por cada proyecto de la lista del formulario.
+                   estado.index es la posición de la fila (0, 1, 2...) */-->
             <div th:each="proyecto, estado : *{proyectos}" class="fila-proyecto">
 
+                <!--/* __${estado.index}__ se calcula antes que el resto, así el campo queda como
+                       proyectos[0].titulo, proyectos[1].titulo... y Spring sabe a qué fila pertenece.
+                       La clave del error se construye igual que en el método validar del controlador */-->
                 <div class="campo">
                     <label th:for="|proyectos${estado.index}.titulo|" th:text="#{editar.proyecto.titulo}">Título</label>
                     <input type="text" th:field="*{proyectos[__${estado.index}__].titulo}">
@@ -69,6 +93,9 @@
                           th:text="#{${errores['proyectos[__${estado.index}__].anio']}}"></span>
                 </div>
 
+                <!--/* La primera opción vacía hace que una fila sin tocar llegue sin categoría ni estado,
+                       y así estaVacio() la detecta. Los value son los códigos que comprueba el controlador.
+                       Con th:field no hace falta th:selected: Thymeleaf marca solo la opción elegida */-->
                 <div class="campo">
                     <label th:for="|proyectos${estado.index}.categoria|" th:text="#{editar.proyecto.categoria}">Categoría</label>
                     <select th:field="*{proyectos[__${estado.index}__].categoria}">
@@ -102,14 +129,20 @@
                           th:text="#{${errores['proyectos[__${estado.index}__].descripcion']}}"></span>
                 </div>
 
+                <!--/* Cada fila tiene su botón. Envía quitar=índice de la fila, y el controlador
+                       lo recibe con @RequestParam Integer quitar para saber cuál borrar */-->
                 <button type="submit" name="quitar" th:value="${estado.index}" th:text="#{editar.boton.quitar}">Quitar este proyecto</button>
             </div>
 
+            <!--/* Solo se ve uno de los dos: el botón si aún no se ha llegado al máximo, o el aviso si ya se ha llegado.
+                   El botón envía accion=anadir. El servidor también comprueba el límite por si se manipula el HTML */-->
             <button type="submit" class="anadir-proyecto" name="accion" value="anadir"
                     th:if="${#lists.size(form.proyectos) lt maxProyectos}" th:text="#{editar.boton.anadir}">Añadir proyecto</button>
             <p class="aviso-limite"
                th:unless="${#lists.size(form.proyectos) lt maxProyectos}" th:text="#{editar.avisoLimite}">Has alcanzado el límite de proyectos</p>
         </div>
+
+        <!--/* Envía accion=previsualizar: el controlador valida y, si no hay errores, muestra la vista previa */-->
         <button type="submit" name="accion" value="previsualizar" th:text="#{editar.boton.previsualizar}">Generar vista previa</button>
     </form>
 </main>

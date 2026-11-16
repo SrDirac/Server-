@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!--/* Página propia del proyecto de interés. Todo el texto sale de los messages (teclea.*),
+       así se traduce igual que el resto del portfolio */-->
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="#{teclea.tituloPagina}">teclea</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="main-proyecto">
+
+    <a class="volver" th:href="@{/portfolio}" th:text="#{teclea.volver}">Volver al portfolio</a>
+
+    <!--/* Cabecera: igual que el perfil del currículum (título, pegatina y presentación) */-->
+    <section class="perfil">
+        <h1>teclea</h1>
+        <p class="titular" th:text="#{teclea.titular}">Mecanografía en español para programadores</p>
+        <p class="presentacion" th:text="#{teclea.presentacion}">Presentación</p>
+        <p class="tarjeta-meta">
+            <span th:text="#{portfolio.categoria.aplicacion}">Aplicaciones</span> · 2026 ·
+            <span class="estado estado-terminado" th:text="#{portfolio.estado.terminado}">Terminado</span>
+        </p>
+        <a class="destacado-boton" href="https://teclea.pages.dev" target="_blank" rel="noopener"
+           th:text="#{portfolio.destacado.probar}">Probar teclea</a>
+        <img class="proyecto-captura" th:src="@{/img/teclea.png}"
+             th:alt="#{portfolio.imagenAlt('teclea')}" alt="Captura del proyecto teclea">
+    </section>
+
+    <!--/* Los apartados con varias entradas usan claves numeradas (teclea.modo.1.nombre…):
+           #numbers.sequence genera los números y se monta la clave con #{${...}} */-->
+    <section>
+        <h2 th:text="#{teclea.modos}">Modos</h2>
+        <ul class="lista-cv">
+            <li th:each="i : ${#numbers.sequence(1, 7)}">
+                <span class="estudio-nombre" th:text="#{${'teclea.modo.' + i + '.nombre'}}">Modo</span>
+                <span class="estudio-centro" th:text="#{${'teclea.modo.' + i + '.texto'}}">Descripción</span>
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2 th:text="#{teclea.funciones}">Funciones destacadas</h2>
+        <ul class="lista-cv">
+            <li th:each="i : ${#numbers.sequence(1, 8)}">
+                <span class="estudio-nombre" th:text="#{${'teclea.funcion.' + i + '.nombre'}}">Función</span>
+                <span class="estudio-centro" th:text="#{${'teclea.funcion.' + i + '.texto'}}">Descripción</span>
+            </li>
+        </ul>
+    </section>
+
+    <!--/* Tecnologías: qué papel tiene cada una dentro de la app */-->
+    <section>
+        <h2 th:text="#{teclea.tecnica}">Cómo está hecho</h2>
+        <p class="proyecto-parrafo" th:text="#{teclea.tecnica.intro}">Introducción</p>
+        <ul class="lista-cv">
+            <li th:each="i : ${#numbers.sequence(1, 6)}">
+                <span class="estudio-nombre" th:text="#{${'teclea.tec.' + i + '.nombre'}}">Tecnología</span>
+                <span class="estudio-centro" th:text="#{${'teclea.tec.' + i + '.texto'}}">Para qué se usa</span>
+            </li>
+        </ul>
+    </section>
+
+    <!--/* Cifras de calidad sacadas del diario del proyecto */-->
+    <section>
+        <h2 th:text="#{teclea.calidad}">Calidad</h2>
+        <ul class="cifras">
+            <li th:each="i : ${#numbers.sequence(1, 4)}">
+                <span class="cifra-numero" th:text="#{${'teclea.cifra.' + i + '.numero'}}">203</span>
+                <span class="cifra-texto" th:text="#{${'teclea.cifra.' + i + '.texto'}}">tests</span>
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2 th:text="#{teclea.decisiones}">Decisiones de diseño</h2>
+        <ul class="lista-cv">
+            <li th:each="i : ${#numbers.sequence(1, 5)}" th:text="#{${'teclea.decision.' + i}}">Decisión</li>
+        </ul>
+    </section>
+
+    <!--/* Cronología: las 7 fases del plan */-->
+    <section>
+        <h2 th:text="#{teclea.fases}">Cómo se construyó</h2>
+        <p class="proyecto-parrafo" th:text="#{teclea.fases.intro}">Introducción</p>
+        <ol class="lista-cv fases">
+            <li th:each="i : ${#numbers.sequence(1, 7)}" th:text="#{${'teclea.fase.' + i}}">Fase</li>
+        </ol>
+    </section>
+
+    <section>
+        <h2 th:text="#{teclea.terceros}">Contenido de terceros</h2>
+        <ul class="lista-cv">
+            <li th:each="i : ${#numbers.sequence(1, 4)}" th:text="#{${'teclea.tercero.' + i}}">Licencia</li>
+        </ul>
+    </section>
+
+</main>
+
+</body>
+</html>

@@ -12,8 +12,10 @@ import java.util.List;
 @Controller
 public class PortFolioController {
 
-    // La descripción es una clave de messages para que se traduzca con el idioma
-    private static final List<Proyecto> PROYECTOS =List.of(
+    //La descripción es una clave de messages para que se traduzca con el idioma
+    //Todas las descripciones de los proyectos se guardan como claves del messages.properties
+    //Para una vez retormamos la vista los traduce y les pone el valor real
+    private static final List<Proyecto> PROYECTOS = List.of(
             new Proyecto(
                     "Portafolio personal", 2025, "aplicacion",
                     "proyecto.portafolio.descripcion",
@@ -39,10 +41,10 @@ public class PortFolioController {
                     null, null
             ),
             new Proyecto(
-                    "Dino Game", 2026, "aplicacion",
-                    "proyecto.dino.descripcion",
-                    "terminado", List.of("Godot", "GDScript"),
-                    null, "/img/dino-game.png"
+                    "teclea", 2026, "aplicacion",
+                    "proyecto.teclea.descripcion",
+                    "terminado", List.of("TypeScript", "SolidJS", "Vite", "IndexedDB", "PWA"),
+                    "https://teclea.pages.dev", "/img/teclea.png"
             ),
             new Proyecto(
                     "Patrones de diseño en Spring", 2025, "aplicacion",
@@ -51,16 +53,34 @@ public class PortFolioController {
                     "https://github.com/SrDirac/Server-", "/img/patrones.png"
             )
     );
+    //Metodo principal de portFolio
+
+    /**
+     * Explicación de los requestParam: permite leer un parámetro de la petición y lo mete en una variable del metodo
+     * ¿Por qué es false?: porque si el parámetro no llega, el parámetro vale null, sino Spring devolvería un error 400
+     * sin ejecutar el metodo
+     *
+     * @param categoria:Busca en la petición un parámetro llamado categoria y lo mete en la variable
+     * @param anio:Busca en la petición un parámetro llamado anio y lo mete en la variable
+     * @param model:Contenedor, es donde metemos el resultado del filtrado de proyectos para posteriormente enviarlo a la vista
+     * @return portolio: es la vista que se devolverá con la función  , el html.
+     */
     @GetMapping("/portfolio")
     public String proyectos(
             @RequestParam(required = false) String categoria,
             @RequestParam(required = false) String anio,
             Model model
     ) {
-        // El año llega como texto: se convierte aquí. Si no es válido, no se filtra por año.
+        //El año llega como texto: se convierte aquí. Si no es válido, no se filtra por año.
+        //Variable de control , debido a que anio llega como String
         Integer anioNumero = null;
         boolean anioInvalido = false;
 
+        //El año llega como texto desde el formulario.
+        //Si no es null ni está vacío, se convierte a número con Integer.parseInt.
+        //Si no es un número válido, se captura la NumberFormatException:
+        //se marca el error para mostrar "Introduce un año válido" y no se filtra por año.
+        //Es simplemente un bloque de codigo para comprobar que el formato del anio en la peticion cumple el formato establecido
         if (anio != null && !anio.isBlank()) {
             try {
                 anioNumero = Integer.parseInt(anio.trim());
@@ -69,8 +89,9 @@ public class PortFolioController {
             }
         }
 
+        //Una vez se ha comprobado el formato, ejecutamos el metodo filtrarProyectos con nuestros proyectos
         List<Proyecto> filtrados = filtrarProyectos(PROYECTOS, categoria, anioNumero);
-
+        //El resultado lo añadimos al model y lo retormamos a la vista
         model.addAttribute("proyectos", filtrados);
         model.addAttribute("categoria", categoria);
         model.addAttribute("anio", anio);
@@ -78,6 +99,17 @@ public class PortFolioController {
 
         return "portfolio";
     }
+
+    //Página propia del proyecto destacado (teclea). Todo su texto está en los messages,
+    //así que no necesita datos del modelo
+    @GetMapping("/portfolio/teclea")
+    public String teclea() {
+        return "teclea";
+    }
+
+    //Metodo privado : recibe una lista de proyectos e implementamos el metodo cumpleFiltro (creado en el record)
+    //Si cumple el filtro , se añade al arrayList de resultados .
+    //Este metodo es el que se implementa en proyectos para su filtrado
     private List<Proyecto> filtrarProyectos(List<Proyecto> proyectos, String categoria, Integer anio) {
         List<Proyecto> resultado = new ArrayList<>();
         for (Proyecto proyecto : proyectos) {

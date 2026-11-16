@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--/* El idioma de la página sale del idioma activo (#locale), que guarda la cookie de IdiomaConfig */-->
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -8,16 +9,39 @@
 </head>
 <body>
 
+<!--/* Inserta el header común (menú e idiomas) desde templates/fragments/header.html */-->
 <header th:replace="~{fragments/header :: header}"></header>
 
 <main class="main-portfolio">
 
     <h1 th:text="#{portfolio.titulo}">Portfolio</h1>
 
-    <!-- Filtro: se envía al servidor por GET y Spring filtra la lista -->
+    <!--/* Proyecto de interés: va fuera del filtro, así que se ve siempre.
+           Enlaza a su página propia (/portfolio/teclea) y a la web publicada */-->
+    <section class="destacado">
+        <img class="destacado-imagen" th:src="@{/img/teclea.png}"
+             th:alt="#{portfolio.imagenAlt('teclea')}" alt="Captura del proyecto teclea">
+        <div class="destacado-cuerpo">
+            <p class="destacado-etiqueta" th:text="#{portfolio.destacado.etiqueta}">Proyecto de interés</p>
+            <h2>teclea</h2>
+            <p th:text="#{portfolio.destacado.resumen}">Resumen del proyecto.</p>
+            <div class="destacado-enlaces">
+                <a class="destacado-boton" th:href="@{/portfolio/teclea}" th:text="#{portfolio.destacado.saberMas}">Conocer el proyecto</a>
+                <a class="tarjeta-enlace" href="https://teclea.pages.dev" th:text="#{portfolio.destacado.probar}"
+                   target="_blank" rel="noopener">Probar teclea</a>
+            </div>
+        </div>
+    </section>
+
+    <!--/* Filtro: se envía por GET a /portfolio, así que los valores van en la URL (?categoria=...&anio=...).
+           El controlador los recibe con @RequestParam y filtra la lista en el servidor con filtrarProyectos */-->
     <form class="filtro" th:action="@{/portfolio}" method="get">
         <div class="filtro-campo">
             <label for="categoria" th:text="#{portfolio.filtro.categoria}">Categoría</label>
+            <!--/* El name tiene que coincidir con el @RequestParam del controlador.
+                   Los value son los códigos de las categorías; el texto visible se traduce.
+                   th:selected marca la opción que eligió el usuario, que el controlador devuelve en "categoria".
+                   En la primera visita ninguna coincide y el navegador muestra la primera, «Todas» */-->
             <select name="categoria" id="categoria">
                 <option value="todas" th:selected="${categoria == 'todas'}" th:text="#{portfolio.filtro.todas}">Todas</option>
                 <option value="aplicacion" th:selected="${categoria == 'aplicacion'}" th:text="#{portfolio.categoria.aplicacion}">Aplicaciones</option>
@@ -28,6 +52,7 @@
 
         <div class="filtro-campo">
             <label for="anio" th:text="#{portfolio.filtro.anio}">Año</label>
+            <!--/* th:value vuelve a poner el año que escribió el usuario, tal como llegó (texto) */-->
             <input type="number" name="anio" id="anio" th:value="${anio}"
                    th:placeholder="#{portfolio.filtro.anioPlaceholder}" placeholder="Ej. 2025">
         </div>
@@ -35,18 +60,24 @@
         <button type="submit" th:text="#{portfolio.filtro.boton}">Filtrar</button>
     </form>
 
+    <!--/* anioInvalido lo pone a true el controlador cuando Integer.parseInt falla. En ese caso no se filtra por año */-->
     <p class="aviso-error" th:if="${anioInvalido}" th:text="#{portfolio.anioInvalido}">Introduce un año válido</p>
 
     <div class="resultados">
+        <!--/* El tamaño de la lista filtrada se mete en el {0} del mensaje */-->
         <p th:text="#{portfolio.resultados(${#lists.size(proyectos)})}">6 proyectos encontrados</p>
+        <!--/* Enlace sin parámetros: el controlador recibe categoría y año a null y muestra todos */-->
         <a th:href="@{/portfolio}" th:text="#{portfolio.mostrarTodos}">Mostrar todos</a>
     </div>
 
     <p class="sin-resultados" th:if="${#lists.isEmpty(proyectos)}" th:text="#{portfolio.sinResultados}">No se encontraron proyectos</p>
 
+    <!--/* Una tarjeta por cada proyecto de la lista que devuelve filtrarProyectos */-->
     <section class="proyectos">
         <div class="tarjeta" th:each="proyecto : ${proyectos}">
 
+            <!--/* Si el proyecto no tiene imagen, el th:if hace que no se genere el <img>.
+                   El alt incluye el título del proyecto para que sea descriptivo */-->
             <img class="tarjeta-imagen"
                  th:if="${proyecto.imagen() != null}"
                  th:src="@{${proyecto.imagen()}}"
@@ -57,6 +88,8 @@
                 <div class="tarjeta-cabecera">
                     <h2 th:text="${proyecto.titulo()}">Título del proyecto</h2>
 
+                    <!--/* th:switch mira el estado y cada th:case pone su etiqueta: verde si está en curso, gris si está terminado.
+                           th:block no aparece en el HTML final, solo sirve para colocar el switch */-->
                     <th:block th:switch="${proyecto.estado()}">
                         <span class="estado estado-en-curso" th:case="'en-curso'" th:text="#{portfolio.estado.enCurso}">En curso</span>
                         <span class="estado estado-terminado" th:case="'terminado'" th:text="#{portfolio.estado.terminado}">Terminado</span>
@@ -64,13 +97,16 @@
                 </div>
 
                 <p class="tarjeta-meta">
+                    <!--/* Monta la clave a partir del código: diseno → portfolio.categoria.diseno, y la traduce */-->
                     <span th:text="#{${'portfolio.categoria.' + proyecto.categoria()}}">Aplicaciones</span>
                     ·
                     <span th:text="${proyecto.anio()}">2025</span>
                 </p>
 
+                <!--/* La descripción es una clave de messages, así que se traduce con #{${...}} */-->
                 <p class="tarjeta-descripcion" th:text="#{${proyecto.descripcion()}}">Descripción del proyecto.</p>
 
+                <!--/* Si el proyecto no tiene tecnologías, se oculta el bloque entero, título incluido */-->
                 <div class="tarjeta-tecnologias" th:unless="${#lists.isEmpty(proyecto.tecnologias())}">
                     <h3 th:text="#{portfolio.tecnologias}">Tecnologías</h3>
                     <ul>
@@ -78,6 +114,7 @@
                     </ul>
                 </div>
 
+                <!--/* Si el proyecto no tiene enlace, no se genera el <a>, para no dejar un enlace vacío */-->
                 <a class="tarjeta-enlace"
                    th:if="${proyecto.enlace() != null}"
                    th:href="${proyecto.enlace()}"
