@@ -18,5 +18,7 @@
         <module>p3p4springboot</module>
         <module>p7springboot</module>
         <module>Portfolio</module>
+        <module>apartado1-modelo-a-bd</module>
+        <module>apartado2-sql-a-modelo</module>
     </modules>
 </project>
