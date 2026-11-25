@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<!-- Vista: Thymeleaf genera la página en el servidor con los datos que le pasa el controlador en el Model.
+     Aquí no hay lógica ni acceso a datos, solo se muestran -->
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis proyectos personales</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+
+<h1>Mis proyectos personales</h1>
+<p class="subtitulo">Registro de los proyectos que desarrollo fuera de clase.</p>
+
+<h2>Añadir proyecto</h2>
+<!-- th:object enlaza el formulario con el ProyectoForm del modelo; th:field rellena
+     cada campo con el valor enviado, así se conservan los datos si hay errores -->
+<!-- Lo recibe el método guardar del controlador. novalidate desactiva la validación del navegador,
+     así las validaciones las hace solo el servidor con las del DTO -->
+<form th:action="@{/proyectos}" th:object="${proyectoForm}" method="post" novalidate>
+
+    <div class="campo">
+        <label for="nombre">Nombre *</label>
+        <input type="text" id="nombre" th:field="*{nombre}" maxlength="60"
+               th:classappend="${#fields.hasErrors('nombre')} ? 'con-error'">
+        <span class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+    </div>
+
+    <div class="campo">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" th:field="*{descripcion}" rows="3" maxlength="300"
+                  th:classappend="${#fields.hasErrors('descripcion')} ? 'con-error'"></textarea>
+        <span class="error" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
+    </div>
+
+    <div class="campo">
+        <label for="urlRepositorio">URL del repositorio</label>
+        <input type="url" id="urlRepositorio" th:field="*{urlRepositorio}" maxlength="150"
+               placeholder="https://github.com/usuario/proyecto"
+               th:classappend="${#fields.hasErrors('urlRepositorio')} ? 'con-error'">
+        <span class="error" th:if="${#fields.hasErrors('urlRepositorio')}" th:errors="*{urlRepositorio}"></span>
+    </div>
+
+    <div class="campo">
+        <label for="horasDedicadas">Horas dedicadas *</label>
+        <input type="number" id="horasDedicadas" th:field="*{horasDedicadas}" min="0" max="2000"
+               th:classappend="${#fields.hasErrors('horasDedicadas')} ? 'con-error'">
+        <span class="error" th:if="${#fields.hasErrors('horasDedicadas')}" th:errors="*{horasDedicadas}"></span>
+    </div>
+
+    <div class="campo">
+        <label for="porcentajeCompletado">Porcentaje completado (%) *</label>
+        <input type="number" id="porcentajeCompletado" th:field="*{porcentajeCompletado}"
+               step="0.01" min="0" max="100"
+               th:classappend="${#fields.hasErrors('porcentajeCompletado')} ? 'con-error'">
+        <span class="ayuda">Entre 0 y 100, con 2 decimales como máximo.</span>
+        <span class="error" th:if="${#fields.hasErrors('porcentajeCompletado')}" th:errors="*{porcentajeCompletado}"></span>
+    </div>
+
+    <div class="campo">
+        <label for="fechaInicio">Fecha de inicio *</label>
+        <input type="date" id="fechaInicio" th:field="*{fechaInicio}"
+               th:classappend="${#fields.hasErrors('fechaInicio')} ? 'con-error'">
+        <span class="error" th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"></span>
+    </div>
+
+    <!-- Si no se marca, el navegador no envía nada, por eso en el DTO publicado es boolean y vale false -->
+    <div class="campo-check">
+        <label>
+            <input type="checkbox" th:field="*{publicado}"> Publicado
+        </label>
+    </div>
+
+    <button type="submit">Guardar proyecto</button>
+</form>
+
+<!-- Ampliación: enlaces a las consultas personalizadas -->
+<nav class="filtros">
+    <a th:href="@{/}">Todos los proyectos</a>
+    <a th:href="@{/publicados}">Publicados</a>
+    <a th:href="@{/en-curso}">En curso</a>
+</nav>
+
+<!-- Si el controlador no envía título (listado completo), se usa el de por defecto -->
+<h2 th:text="${titulo} ?: 'Listado de proyectos'">Listado de proyectos</h2>
+<p class="vacio" th:if="${proyectos.isEmpty()}">Todavía no hay proyectos registrados.</p>
+
+<table th:unless="${proyectos.isEmpty()}">
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Repositorio</th>
+        <th>Horas</th>
+        <th>Completado</th>
+        <th>Fecha de inicio</th>
+        <th>Publicado</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- th:each crea una fila por cada proyecto de la lista que manda el controlador -->
+    <tr th:each="p : ${proyectos}">
+        <td th:text="${p.nombre}"></td>
+        <td th:text="${p.descripcion} ?: '—'"></td>
+        <td>
+            <a th:if="${p.urlRepositorio != null and !p.urlRepositorio.isBlank()}"
+               th:href="${p.urlRepositorio}" th:text="${p.urlRepositorio}" target="_blank"></a>
+            <span th:unless="${p.urlRepositorio != null and !p.urlRepositorio.isBlank()}">—</span>
+        </td>
+        <td th:text="${p.horasDedicadas}"></td>
+        <td th:text="${#numbers.formatDecimal(p.porcentajeCompletado, 1, 2, 'COMMA')} + ' %'"></td>
+        <td th:text="${#temporals.format(p.fechaInicio, 'dd/MM/yyyy')}"></td>
+        <td>
+            <span class="estado" th:classappend="${p.publicado} ? 'estado-publicado' : 'estado-no-publicado'"
+                  th:text="${p.publicado} ? 'Sí' : 'No'"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

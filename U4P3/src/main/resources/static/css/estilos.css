@@ -1,0 +1,376 @@
+/* Estilo adaptado del Portfolio: misma paleta, tipografías y aire "neo-brutalista" */
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Geist:wght@400;500;700&family=Geist+Mono:wght@400;500&display=swap");
+
+/* ===== Variables ===== */
+:root {
+    --crema: #f3f3e9;
+    --tinta: #1c1b1a;
+    --rojo: #e33529;
+    --gris: #6f6b64;
+    --linea: rgba(160, 156, 146, 0.45);
+    --suave: rgba(160, 156, 146, 0.18);
+    --verde: #198754;
+    --gris-estado: #6c757d;
+
+    --fuente-titulo: "Anton", Impact, "Arial Narrow", sans-serif;
+    --fuente-texto: "Geist", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --fuente-mono: "Geist Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ===== Base ===== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* La página no tiene <main>, así que el body hace de contenedor centrado */
+body {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+    background-color: var(--crema);
+    color: var(--tinta);
+    font-family: var(--fuente-texto);
+    line-height: 1.5;
+    counter-reset: seccion;
+}
+
+h1,
+h2 {
+    font-family: var(--fuente-titulo);
+    font-weight: 400;
+    text-transform: uppercase;
+    color: var(--rojo);
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(3rem, 11vw, 7rem);
+    line-height: 0.85;
+    letter-spacing: -0.01em;
+}
+
+/* Numeración automática de secciones (01, 02…), igual que en el Portfolio */
+h2 {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: 3rem 0 1.25rem;
+    padding-bottom: 0.4rem;
+    font-size: clamp(2rem, 6vw, 2.75rem);
+    line-height: 1;
+    border-bottom: 2px solid var(--tinta);
+}
+
+h2::before {
+    counter-increment: seccion;
+    content: counter(seccion, decimal-leading-zero);
+    margin-top: 0.2em;
+    font-family: var(--fuente-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: var(--tinta);
+}
+
+a {
+    color: var(--rojo);
+}
+
+::selection {
+    background-color: var(--rojo);
+    color: var(--crema);
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--rojo);
+    outline-offset: 3px;
+}
+
+/* Subtítulo como la pegatina girada del titular */
+.subtitulo {
+    display: inline-block;
+    margin: 1.25rem 0 0;
+    padding: 0.45rem 0.9rem;
+    background-color: var(--tinta);
+    color: var(--crema);
+    font-family: var(--fuente-mono);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transform: rotate(-1.5deg);
+}
+
+.subtitulo::before {
+    content: "{ ";
+    color: var(--rojo);
+}
+
+.subtitulo::after {
+    content: " }";
+    color: var(--rojo);
+}
+
+/* ===== Formulario ===== */
+form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 1.5rem;
+    padding: 1.75rem 1.5rem 1.5rem;
+    background-color: var(--suave);
+    border: 2px solid var(--tinta);
+    box-shadow: 6px 6px 0 var(--tinta);
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 1.25rem;
+}
+
+/* Nombre y descripción ocupan todo el ancho */
+.campo:has(#nombre),
+.campo:has(#descripcion),
+.campo:has(#urlRepositorio) {
+    grid-column: 1 / -1;
+}
+
+.campo label,
+.campo-check label {
+    font-family: var(--fuente-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gris);
+}
+
+.campo input,
+.campo textarea {
+    padding: 0.55rem 0.7rem;
+    background-color: transparent;
+    color: var(--tinta);
+    border: 2px solid var(--tinta);
+    border-radius: 0;
+    font: inherit;
+}
+
+.campo input:focus,
+.campo textarea:focus {
+    outline: none;
+    border-color: var(--rojo);
+    box-shadow: 3px 3px 0 var(--rojo);
+}
+
+.campo textarea {
+    min-height: 6rem;
+    resize: vertical;
+}
+
+.ayuda {
+    font-family: var(--fuente-mono);
+    font-size: 0.75rem;
+    color: var(--gris);
+}
+
+.error {
+    font-family: var(--fuente-mono);
+    font-size: 0.8rem;
+    color: var(--rojo);
+}
+
+.error::before {
+    content: "✱ ";
+}
+
+/* Campo con error (clase puesta por th:classappend) */
+.campo .con-error {
+    border-color: var(--rojo);
+    background-color: rgba(227, 53, 41, 0.06);
+}
+
+.campo-check {
+    grid-column: 1 / -1;
+    margin-bottom: 1.5rem;
+}
+
+.campo-check label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--tinta);
+    cursor: pointer;
+}
+
+.campo-check input {
+    width: 1.2rem;
+    height: 1.2rem;
+    accent-color: var(--rojo);
+}
+
+button {
+    grid-column: 1 / -1;
+    justify-self: start;
+    padding: 0.6rem 1.5rem;
+    background-color: var(--rojo);
+    color: var(--crema);
+    border: 2px solid var(--rojo);
+    border-radius: 999px;
+    font-family: var(--fuente-titulo);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+button:hover {
+    background-color: var(--tinta);
+    border-color: var(--tinta);
+}
+
+button:active {
+    transform: translateY(2px);
+}
+
+/* ===== Filtros (como el menú del header del Portfolio) ===== */
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+    padding: 0.7rem 1.25rem;
+    background-color: var(--tinta);
+    border-bottom: 4px solid var(--rojo);
+    font-family: var(--fuente-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.filtros a {
+    padding: 0.2rem 0;
+    color: var(--crema);
+    text-decoration: none;
+    background-image: linear-gradient(var(--rojo), var(--rojo));
+    background-size: 0 2px;
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    transition: background-size 0.2s;
+}
+
+.filtros a:hover {
+    background-size: 100% 2px;
+}
+
+/* ===== Listado ===== */
+.vacio {
+    padding: 3rem 2rem;
+    text-align: center;
+    font-family: var(--fuente-mono);
+    text-transform: uppercase;
+    color: var(--gris);
+    border: 2px dashed var(--linea);
+}
+
+table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    border: 2px solid var(--tinta);
+    box-shadow: 6px 6px 0 var(--tinta);
+}
+
+th,
+td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background-color: var(--tinta);
+    color: var(--crema);
+    font-family: var(--fuente-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+}
+
+td {
+    border-bottom: 1px solid var(--linea);
+}
+
+tbody tr {
+    transition: background-color 0.15s;
+}
+
+tbody tr:hover {
+    background-color: var(--suave);
+}
+
+/* Nombre del proyecto destacado */
+td:first-child {
+    font-weight: 700;
+}
+
+/* Horas, porcentaje y fecha en monoespaciada */
+td:nth-child(4),
+td:nth-child(5),
+td:nth-child(6) {
+    font-family: var(--fuente-mono);
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+td:nth-child(3) a {
+    overflow-wrap: anywhere;
+}
+
+/* ===== Etiquetas de publicado: verde «Sí», gris «No» (como los estados del Portfolio) ===== */
+.estado {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-family: var(--fuente-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    color: #ffffff;
+}
+
+.estado-publicado {
+    background-color: var(--verde);
+}
+
+.estado-no-publicado {
+    background-color: var(--gris-estado);
+}
+
+/* ===== Móvil ===== */
+@media (max-width: 600px) {
+    body {
+        padding: 2rem 1rem 3rem;
+    }
+
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    .filtros {
+        gap: 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}
